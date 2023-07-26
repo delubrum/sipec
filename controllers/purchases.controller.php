@@ -20,8 +20,8 @@ class PurchasesController{
 
   public function Index(){
     require_once "middlewares/check.php";
-    $user = $this->users->UserGet($_SESSION["id-CRB"]);
-    $permissions = json_decode($this->users->permissionsGet($_SESSION["id-CRB"])->permissions, true);
+    $user = $this->users->UserGet($_SESSION["id-SIPEC"]);
+    $permissions = json_decode($this->users->permissionsGet($_SESSION["id-SIPEC"])->permissions, true);
     $filters = '';
     $today = date("Y-m-d");
     $firstday = date('Y-m-01', strtotime($today));

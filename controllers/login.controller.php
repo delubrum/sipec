@@ -31,7 +31,7 @@ class LoginController{
       }
       if ($isAuthenticated) {
         session_start();
-        $_SESSION["id-CRB"] = $user->id;
+        $_SESSION["id-SIPEC"] = $user->id;
         session_write_close();
         setcookie("user_login", $email, $cookie_expiration_time);
         $random_password = $this->util->getToken(16);
@@ -60,7 +60,7 @@ class LoginController{
 
   public function Logout() {
     session_start();
-    $_SESSION["id-CRB"] = "";
+    $_SESSION["id-SIPEC"] = "";
     session_destroy();
     $this->util->clearAuthCookie();
     header('Location: ?c=Login&a=Index');

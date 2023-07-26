@@ -2,8 +2,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <link rel="icon" sizes="192x192" href="assets/img/logoES.png">
-    <title>ESpector</title>
+    <link rel="icon" sizes="192x192" href="assets/img/logo.png">
+    <title>SIPEC</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -126,8 +126,8 @@
         <aside class="main-sidebar sidebar-light-primary elevation-4">
             <!-- Brand Logo -->
             <a href="?c=Init&a=Index" class="brand-link">
-                <img src="assets/img/logoES.png" style="width:25px" class="brand-image">
-                <span class="brand-text font-weight-dark pl-3 h6">ESpector</span>
+                <img src="assets/img/logo.png" style="width:37px; margin-left:0.7rem !important" class="brand-image">
+                <span class="brand-text font-weight-dark pl-2 h6">SIPEC</span>
             </a>
 
             <!-- Sidebar -->

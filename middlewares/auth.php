@@ -12,7 +12,7 @@ $current_date = date("Y-m-d H:i:s", $current_time);
 $cookie_expiration_time = $current_time + (30 * 24 * 60 * 60);  // for 1 month
 $isLoggedIn = false;
 // Check if loggedin session and redirect if session exists
-if (!empty($_SESSION["id-CRB"])) {
+if (!empty($_SESSION["id-SIPEC"])) {
   $isLoggedIn = true;
 }
 // Check if loggedin session exists
@@ -43,7 +43,7 @@ else if (!empty($_COOKIE["user_login"]) && !empty($_COOKIE["random_password"]) &
       $isLoggedIn = true;
       $user = $auth->getUserByEmail($userToken->email);
       session_start();
-      $_SESSION["id-CRB"] = $user->id;
+      $_SESSION["id-SIPEC"] = $user->id;
       session_write_close();
       $load_lang = $user->lang;
       $lang_json = file_get_contents("assets/lang/".$load_lang.".json");

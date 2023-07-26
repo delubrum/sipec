@@ -8,10 +8,10 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-12">
-                <button type="button" class="btn btn-primary float-right new font-weight-bold">
-                    <i class="fas fa-plus mr-1"></i> Nuevo
+                <button type="button" class="btn btn-primary float-right new">
+                    <i class="fas fa-plus ml-1"></i> Nuevo
                 </button>
-                <h1 class="m-0 text-dark">Usuarios</h1>
+                <h1 class="m-0 text-dark">Clientes</h1>
                 
             </div>
         </div>
@@ -30,34 +30,20 @@
 </div>
 
 <script>
-
-$(document).on("click", ".new", function() {
-    id = $(this).data('id');
-    $.post( "?c=Users&a=UserForm", { id }).done(function( data ) {
-        $('#lgModal').modal('toggle');
-        $('#lgModal .modal-content').html(data);
-    });
-});
-
-$(document).on("click", ".edit", function() {
-    id = $(this).data('id');
-    if (id == <?php echo $user->id ?>) {
-        window.location = "?c=Users&a=Profile"
-    } else {
-        $.post( "?c=Users&a=UserEdit", { id }).done(function( data ) {
-            $('#xlModal').modal('toggle');
-            $('#xlModal .modal-content').html(data);
-        });
-    }
-});
-
 $(document).ready(function() {
-    $('table').DataTable({
+    $('#listTable').DataTable({
         "order": [],
         "lengthChange": false,
         "paginate": false,
-        "scrollX": true,
-        "autoWidth": false
+        "responsive" : true
+    });
+});
+
+$(document).on("click", ".new", function() {
+    id = $(this).data('id');
+    $.post( "?c=Clients&a=New", {id}).done(function( data ) {
+        $('#lgModal').modal('toggle');
+        $('#lgModal .modal-content').html(data);
     });
 });
 </script>

@@ -1,11 +1,11 @@
-<table id="example" class="display nowrap">
+<table id="example" class="table-striped" style="width:100%">
     <thead>
         <tr>
             <th>Id</th>
-            <th>Name</th>
+            <th>Nombre</th>
             <th>Email</th>
-            <th>Created At</th>
-            <th class="text-right">Actions</th>
+            <th>Fecha Creación</th>
+            <th class="text-right">Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -18,9 +18,8 @@
             <td><?php echo $r->email; ?></td>
             <td><?php echo $r->createdAt; ?></td>
             <td class="text-right">
-                <button type="button" class="btn btn-primary edit" data-toggle="tooltip" data-placement="top" data-status='process' data-id="<?php echo $r->id; ?>" title="Edit"><i class="fas fa-edit"></i></button>
-                <button type="button" class="btn btn-danger cancel" data-toggle="tooltip" data-placement="top" data-id="<?php echo $r->id; ?>" title="Deactivate"><i class="fas fa-trash"></i></button>
-
+                <button type="button" class="btn btn-primary edit" data-toggle="tooltip" data-placement="top" data-status='process' data-id="<?php echo $r->id; ?>" title="Editar"><i class="fas fa-edit m-1"></i></button>
+                <button type="button" class="btn btn-danger cancel" data-toggle="tooltip" data-placement="top" data-id="<?php echo $r->id; ?>" title="Desactivar"><i class="fas fa-trash m-1"></i></button>
             </td>
         </tr>
         <?php } ?>

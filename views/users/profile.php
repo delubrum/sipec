@@ -53,27 +53,13 @@
 										<h5><?php echo $t->category ?></h5>
 										<hr>
 									</div>
-
-									<?php 
-									$userPermissions = json_decode($this->init->get('users',$user->id)->permissions);
-									foreach ($this->users->PermissionsList($t->category) as $p) { ?>
-									<label class="btn <?php echo (in_array($p->id, $userPermissions)) ? 'btn-primary' : 'btn-secondary'; ?> permission active" data-id="<?php echo $p->id ?>" style="cursor:pointer">
-										<?php echo $p->name ?>
-										<?php echo (in_array($p->id, $userPermissions)) ? "<input type='hidden' name='permissions[]' value='$p->id'>" : ""; ?>
-										
+									<?php foreach ($this->users->PermissionsList($t->category) as $p) { ?>
+									<label class="btn <?php echo (in_array($p->id, $userPermissions)) ? 'btn-primary' : 'btn-secondary'; ?> permission" data-id="<?php echo $p->id ?>" style="cursor:pointer">
+										<?php echo $p->name ?>										
 									</label>
 									<?php } ?>
-						
 								<?php } ?>
 								</div>
-							</div>
-							<div class="row mt-3">
-							<?php  if (in_array(1, $permissions)) { ?>
-								<div class="col-12 text-right">
-								<input type="hidden" name="userId" value="<?php echo $user->id ?>">
-									<button type="submit" class="btn btn-primary">Actualizar</button>
-								</div>
-								<?php  } ?>
 							</div>
 						</form>
 
@@ -84,26 +70,23 @@
 	</div>
 </div>
 
-
-
+<?php  if (in_array(1, $permissions)) { ?>
 <script>
-
 $(document).on('click','.permission', function() {
-	id = $(this).data('id');
-	div = `<input type='hidden' name='permissions[]' value='${id}'>`;
-    $(this).toggleClass('btn-primary btn-secondary active');
-	if ($(this).hasClass("btn-secondary")) {
-		$(this).find('input').remove();
-    } else {
-		$(this).append(div).val(id);
-    }
+	const userId = '<?php echo $user->id ?>';
+	const elements = document.getElementsByClassName('permission');
+	const permissions = Array.from(elements, item => item.getAttribute('data-id'));
+	$("#loading").show();
+	$(this).toggleClass('btn-primary btn-secondary');
+	alert(permissions);
 });
 
 $(document).on('submit','#userPermissions_form', function(e) {
     e.preventDefault();
-	$("#loading").show();
-	$.post( "?c=Users&a=UserPermissionsSave", $("#userPermissions_form").serialize()).done(function( res ) {
+		$("#loading").show();
+		$.post( "?c=Users&a=UserPermissionsSave", $("#userPermissions_form").serialize()).done(function( res ) {
 		location.reload();   
 	});
 });
 </script>
+<?php } ?>

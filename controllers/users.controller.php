@@ -28,6 +28,7 @@ class UsersController{
     require_once "middlewares/check.php";
     $a = 'Profile';
     $b = 'User';
+    $userPermissions = json_decode($this->init->get('permissions','users',$user->id)->permissions);
     require_once 'views/layout/header.php';
     require_once 'views/users/profile.php';
   }
@@ -55,11 +56,14 @@ class UsersController{
 
   }
 
-  public function UserPermissionsSave(){
-    $item = new stdClass();
-    $item->userId=$_REQUEST['userId'];
-    $item->permissions=json_encode($_REQUEST['permissions']);
-    $this->users->userPermissionsSave($item);
+  public function PermissionsSave(){
+    require_once "middlewares/check.php";
+    if (in_array(1, $permissions)) {
+      $item = new stdClass();
+      $item->userId=$_REQUEST['userId'];
+      $item->permissions=json_encode($_REQUEST['permissions']);
+      $this->users->userPermissionsSave($item);
+    }
   }
 
 }

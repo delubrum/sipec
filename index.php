@@ -2,6 +2,18 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+header("Content-Security-Policy: script-src 'self' 'unsafe-inline' *;");
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: DENY");
+header("X-XSS-Protection: 1; mode=block");
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
+header("X-Permitted-Cross-Domain-Policies: none");
+header("Referrer-Policy: no-referrer");
+header("Feature-Policy: geolocation 'self'; camera 'none'; microphone 'none'");
+header("Expect-CT: max-age=86400, enforce, report-uri=\"https://example.com/ct-report\"");
+header("Permissions-Policy: autoplay=(self), camera=(), microphone=()");
+
+
 require_once 'models/database.php';
 
 $controller = 'login';

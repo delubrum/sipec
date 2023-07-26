@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="robots" content="noindex">
-    <title>ESpector</title>
-    <link rel="icon" sizes="192x192" href="assets/img/logoES.jpg" />
+    <title>SIPEC</title>
+    <link rel="icon" sizes="192x192" href="assets/img/logo.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/plugins/toastr/toastr.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
@@ -24,11 +24,11 @@
      
     <div class="container">
     <div class="img">
-    <img src="assets/img/intro.jpg" alt="">
+    <img src="assets/img/intro.png" alt="">
     </div>    
     <div class="login-container">
     <form method="post" id="login_form">
-        <img src="assets/img/logo.png" alt="" class="avatar" >
+        <img src="assets/img/logo2.png" alt="" class="avatar" >
          <h2></h2>
           <div class="input-div one">
            <div class="i">
@@ -49,7 +49,7 @@
         </div>
         </div>
         
-        <input type="submit" class="btn" value="Login">
+        <input type="submit" class="btn" style="background:#004240" value="Login">
         </form>
     </div>
     

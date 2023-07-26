@@ -19,8 +19,8 @@ class InitController{
 
   public function SessionRefresh(){
     session_start();
-    if (isset($_SESSION['id-CRB'])) {
-      $_SESSION['id-CRB'] = $_SESSION['id-CRB'];
+    if (isset($_SESSION['id-SIPEC'])) {
+      $_SESSION['id-SIPEC'] = $_SESSION['id-SIPEC'];
     }
   }
 

@@ -9,7 +9,7 @@
     <div class="modal-body">
     <?php } ?>
     <?php if ($a == 'Profile') { ?>
-        <div class="card">
+        <div class="card p-2">
             <div class="card-body">
             <?php } ?>
                 <div class="row mb-3">
@@ -45,14 +45,6 @@
 
                 -->
                 <input type="hidden" name="lang" value="es">
-                <!-- <div class="row mb-3">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Email Password</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        <input type="password" name="emailpass" id="epass" class="form-control" value="<?php echo (isset($user->id) and $a == 'Profile') ? $user->emailPassword : ''  ?>" required>
-                    </div>
-                </div> -->
                 <div class="row mb-3">
                     <div class="col-sm-3">
                         <h6 class="mb-0">Nueva Contraseña</h6>
@@ -71,9 +63,8 @@
                 </div>
                 <?php if ($a == 'Profile') { ?>
                 <div class="row">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-9 text-secondary">
-                        <input type="submit" class="btn btn-primary px-4 float-right" value="Save">
+                    <div class="col-12 text-center">
+                        <input type="submit" class="btn btn-primary" value="Guardar">
                     </div>
                 </div>
                 <?php } ?>
