@@ -49,7 +49,7 @@
                 <div class="form-group">
                     <label>* Fecha:</label>
                     <div class="input-group">
-                    <input type="date" class="form-control" name="date" min="<?php echo date('Y-m-d', strtotime('-3 days')); ?>">
+                    <input type="date" class="form-control" name="date" min="<?php echo date('Y-m-d', strtotime('-2 days')); ?>">
                     </div>
                 </div>
             </div>

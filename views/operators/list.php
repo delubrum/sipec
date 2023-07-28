@@ -1,25 +1,23 @@
 <table id="list" class="display table-striped text-md">
-  <thead>
-      <tr>
-          <th>Fecha</th>
-          <th>Cliente</th>
-          <th>Producto</th>
-          <th>Status</th>
-          <th class="text-right">Acción</th>
-      </tr>
-  </thead>
-</table> 
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Status</th>
+            <th class="text-right">Acción</th>
+        </tr>
+    </thead>
+</table>
 
 <script>
 $(document).ready(function() {
     var table = $('#list').DataTable({
-        'order': [[1, 'desc']],
+        'order': [[1, 'asc']],
         'lengthChange' : false,
         'paginate': false,
         'scrollX' : true,
         'autoWidth' : false,
         'ajax': {
-            'url':'?c=RM&a=Data',
+            'url':'?c=Operators&a=Data',
             'dataSrc': function (json) {
                 // Check if the data array is not empty or null
                 if (json != '') {
@@ -33,23 +31,19 @@ $(document).ready(function() {
             },
         },
         'columns': [
-            { data: 'Date' },
-            { data: 'Client' },
-            { data: 'Product' },
+            { data: 'Name' },
             { data: 'Status' },
             { data: 'Action' }
         ]
     });
 });
 
-$(document).on("click", ".action", function() {
-    id = $(this).data('id');
-    status = $(this).data('status');
+$(document).on('click','.status', function(e) {
+    id = $(this).data("id");
+    status = $(this).data("status");
     $("#loading").show();
-    $.post("?c=RM&a=RM",{id,status}).done(function(data){
-        $("#loading").hide();
-        $('#xlModal').modal('toggle');
-        $('#xlModal .modal-content').html(data);
+    $.post("?c=Operators&a=Status", { id,status }).done(function( res ) {
+        location.reload();
     });
 });
 </script>
