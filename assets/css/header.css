@@ -120,3 +120,35 @@ html {
   min-height: initial !important;
   height: fit-content !important;
 }
+
+.table-excel {
+  width: 100%;
+}
+
+.table-excel th,
+.table-excel td {
+  padding: 8px;
+  text-align: center;
+}
+
+.table-excel th {
+  background-color: #f2f2f2;
+}
+
+.table-excel td {
+  border: 1px solid #ddd !important;
+}
+
+.table-excel input,.table-excel select {
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: transparent;
+  text-align: center;
+  outline: none;
+}
+
+/* Agrega un efecto de sombra al hacer hover en la celda */
+.table-excel td:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}

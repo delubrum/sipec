@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -139,7 +140,8 @@
                     <?php 
                     $permissionsTitle = array();
                     foreach($permissions as $p) { 
-                        $permissionsTitle[] = $this->init->get('*','permissions',$p)->title;
+                        $filters = "and id = " . $p;
+                        $permissionsTitle[] = $this->init->get('*','permissions',$filters)->title;
                     };
                     foreach($this->init->navTitleList() as $t) { 
                     if (in_array($t->title, $permissionsTitle)) {

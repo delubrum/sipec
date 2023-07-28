@@ -1,5 +1,4 @@
 <?php
-
 class Init {
     private $pdo;
     public function __CONSTRUCT() {
@@ -10,6 +9,26 @@ class Init {
             catch(Exception $e) {
             die($e->getMessage());
         }
+    }
+
+    public function log($query) {
+        if(!isset($_SESSION)) { 
+            session_start(); 
+        }
+        $userId = $_SESSION["id-SIPEC"];
+        $query = addslashes($query);
+        $query = trim(preg_replace( "/\r|\n/", "", $query));
+        $query = preg_replace('/\s+/', ' ', $query);
+        try {
+            $sql = "INSERT INTO log (query,userId) VALUES (
+                '$query',
+                '$userId'
+            )";
+			$this->pdo->prepare($sql)->execute();
+        }
+            catch (Exception $e) {
+            die($e->getMessage());
+        }    
     }
 
     public function navTitleList() {
@@ -54,7 +73,9 @@ class Init {
         try {
             $sql = "INSERT INTO $table ($keys) VALUES ($vals)";
 			$this->pdo->prepare($sql)->execute();
-            return $this->pdo->lastInsertId();
+            $id = $this->pdo->lastInsertId();
+            $this->log($sql);
+            return $id;
         }
             catch (Exception $e) {
             die($e->getMessage());
@@ -72,24 +93,25 @@ class Init {
                 SET $vals 
                 WHERE id = '$id'";
             $this->pdo->prepare($sql)->execute();
+            $this->log($sql);
         } catch (Exception $e) {
             die($e->getMessage());
         }
     }
 
-    public function updateField($table,$field,$value,$id) {
+    public function delete($table,$filters) {
         try {
-            $stm = $this->pdo->prepare("UPDATE $table 
-                SET $field = '$value' 
-                WHERE id = $id
-                ");
-            $stm->execute();
+            $sql = "DELETE FROM $table 
+            WHERE $filters
+            ";
+            $this->pdo->prepare($sql)->execute();
+            $this->log($sql);
         } catch (Exception $e) {
             die($e->getMessage());
         }
     }
 
-    public function list($fields,$table,$joins = '',$filters = '') {
+    public function list($fields,$table,$filters = '',$joins = '',) {
         try {
             $stm = $this->pdo->prepare("SELECT $fields
             FROM $table
@@ -105,20 +127,25 @@ class Init {
         }
     }
 
-    public function get($fields,$table,$id,$joins = '',$filters = '') {
+    public function get($fields,$table,$filters = '',$joins = '') {
         try {
-            $stm = $this->pdo->prepare("SELECT $fields
+            $sql = "SELECT $fields
             FROM $table
             $joins
-            WHERE id = $id
+            WHERE 1=1
             $filters
-            ");
+            ";
+            $stm = $this->pdo->prepare($sql);
             $stm->execute();
             return $stm->fetch(PDO::FETCH_OBJ);
         }
             catch (Exception $e) {
             die($e->getMessage());
         }
+    }
+
+    public function redirect() {
+        header("location: 403.php");
     }
     
 }

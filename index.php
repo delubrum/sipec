@@ -9,8 +9,8 @@ header("X-XSS-Protection: 1; mode=block");
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
 header("X-Permitted-Cross-Domain-Policies: none");
 header("Referrer-Policy: no-referrer");
-header("Feature-Policy: geolocation 'self'; camera 'none'; microphone 'none'");
-header("Expect-CT: max-age=86400, enforce, report-uri=\"https://example.com/ct-report\"");
+header("Feature-Policy: geolocation 'self';");
+// header("Expect-CT: max-age=86400, enforce, report-uri=\"https://example.com/ct-report\"");
 header("Permissions-Policy: autoplay=(self), camera=(), microphone=()");
 
 

@@ -8,10 +8,10 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-12">
-                <button type="button" class="btn btn-primary float-right new">
-                    <i class="fas fa-plus ml-1"></i> Nuevo
+                <button type="button" class="btn btn-primary float-right new btn-lg">
+                    <i class="fas fa-plus"></i>
                 </button>
-                <h1 class="m-0 text-dark">Clientes</h1>
+                <h2 class="m-0 text-dark">Clientes</h2>
                 
             </div>
         </div>
@@ -21,8 +21,8 @@
 <!-- Main content -->
 <div class="content">
     <div class="container-fluid">
-        <div class="card p-4 listTable">
-            <?php require_once 'list.php' ?>        
+        <div class="card p-4 listTable"> 
+            <?php require_once 'list.php' ?>
         </div>
     </div>
 </div>
@@ -30,15 +30,6 @@
 </div>
 
 <script>
-$(document).ready(function() {
-    $('#listTable').DataTable({
-        "order": [],
-        "lengthChange": false,
-        "paginate": false,
-        "responsive" : true
-    });
-});
-
 $(document).on("click", ".new", function() {
     id = $(this).data('id');
     $.post( "?c=Clients&a=New", {id}).done(function( data ) {

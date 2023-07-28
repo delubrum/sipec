@@ -15,7 +15,7 @@ class Login {
 
   public function getUserByEmail($email) {
     try {
-      $stm = $this->pdo->prepare("SELECT id,password,lang FROM users WHERE email = ? and cancelledAt is null");
+      $stm = $this->pdo->prepare("SELECT id,password,lang FROM users WHERE email = ? and status = 1");
       $stm->execute(array($email));
       return $stm->fetch(PDO::FETCH_OBJ);
     }

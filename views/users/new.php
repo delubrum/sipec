@@ -1,7 +1,7 @@
-<form id="user_form" autocomplete="off">
+<form id="form" autocomplete="off">
     <?php if ($a != 'Profile') { ?>
     <div class="modal-header">
-        <h5 class="modal-title">New User</b></h5>
+        <h5 class="modal-title">Nuevo Usuario</b></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -79,40 +79,19 @@
 </form>
 
 <script>
-$(document).on('submit','#user_form', function(e) {
+$(document).on('submit', '#form', function(e) {
+    e.stopImmediatePropagation();
     e.preventDefault();
-    if (document.getElementById("user_form").checkValidity()) {
-        if ($("#cpass").val() != '' && $("#newpass").val() != $("#cpass").val()) {
-            toastr.error('New Password do not match');
-        } else {
-            $("#loading").show();
-            $.post( "?c=Users&a=UserSave", $("#user_form").serialize()).done(function( res ) {
-                if (isNaN(res.trim())) {
-                    toastr.error(res.trim());
-                    $("#loading").hide();
-                } else {
-                    id = res.trim();
-                    if (res.trim() != <?php echo $user->id ?>) {
-                        $.post( "?c=Users&a=UserEdit", { id }).done(function( data ) {
-                            $('#xlModal').modal('toggle');
-                            $('#xlModal .modal-content').html(data);
-                            $("#loading").hide();
-                            $('#lgModal').modal('toggle');
-                        });
-                    } else {
-                        location.reload();
-                    }
-                }
-            });
-        }
+    if (document.getElementById("form").checkValidity()) {
+        $("#loading").show();
+        $.post( "?c=Users&a=Save", $( "#form" ).serialize()).done(function(res) {
+            if (isNaN(res)) {
+                toastr.error(res);
+                $("#loading").hide();
+            } else {
+                window.location = '?c=Users&a=Profile&id='+res;
+            }
+        });
     }
 });
-
-// $(document).on('input','#epass', function(e) {
-//     $(this).attr('type', '');
-// });
-
-// $(document).on('blur','#epass', function(e) {
-//     $(this).attr('type', 'password');
-// });
 </script>

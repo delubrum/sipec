@@ -1,12 +1,6 @@
-<header>
-    <script src="assets/plugins/inputmask/jquery.inputmask.min.js"></script>
-    <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
-    <script src="assets/plugins/select2/js/select2.full.min.js"></script>
-</header>
-
-<form method="post" id="client_form">
+<form method="post" id="form">
     <div class="modal-header">
-        <h5 class="modal-title"><?php echo (isset($id)) ? 'Edit' : 'New'; ?> Client</b></h5>
+        <h5 class="modal-title"><?php echo (isset($id)) ? 'Editar' : 'Nuevo'; ?> Cliente</b></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -15,16 +9,16 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>* Name:</label>
+                    <label>* Representante:</label>
                     <div class="input-group">
                         <input class="form-control" name="name" value="<?php echo isset($id) ? $id->name : '' ?>" required>
-                        <input type="hidden" name="clientId" value="<?php echo isset($id) ? $id->id : '' ?>">
+                        <input type="hidden" name="id" value="<?php echo isset($id) ? $id->id : '' ?>">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>* Company:</label>
+                    <label>* Empresa:</label>
                     <div class="input-group">
                     <input class="form-control" name="company" value="<?php echo isset($id) ? $id->company : '' ?>" required>
                     </div>
@@ -40,61 +34,62 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>* Tel 1:</label>
+                    <label>* Tel:</label>
                     <div class="input-group">
-                    <input class="form-control" name="tel1" value="<?php echo isset($id) ? $id->tel1 : '' ?>" required>
+                    <input class="form-control" name="tel" value="<?php echo isset($id) ? $id->tel : '' ?>" required>
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>* Tel 2:</label>
-                    <div class="input-group">
-                    <input class="form-control" name="tel2" value="<?php echo isset($id) ? $id->tel2 : '' ?>">
+                    <label>* Products:</label>
+                    <div>
+                        <?php foreach ($this->init->list('*','products',' and status = 1') as $p) { ?>
+                        <label type="button" class="btn <?php echo (isset($id->products) and in_array($p->id,json_decode($id->products))) ? 'btn-info' : 'btn-secondary'; ?> products">
+                            <?php echo $p->name ?>
+                            <input type="hidden" name="products[]" value="<?php echo $p->id ?>" <?php echo (isset($id->products) and in_array($p->id,json_decode($id->products))) ? '' : 'disabled'; ?>>
+                        </label>
+                        <?php } ?>                            
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>* City:</label>
-                    <div class="input-group">
-                    <input class="form-control" name="city" value="<?php echo isset($id) ? $id->city : '' ?>" required>
-                    </div>
-                </div>
-            </div>
+
+
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><?php echo (isset($id)) ? 'Update' : 'Add'; ?></button>
+        <button type="submit" class="btn btn-primary"><?php echo (isset($id)) ? 'Actualizar' : 'Guardar'; ?></button>
     </div>
 </form>
 
 <script>
-$('.select2').select2({
-    dropdownParent: $('#lgModal')
-});
-
-$(document).ready(function() {
-    $(":input").inputmask();
-});
-
-$('#client_form').on('submit', function(e) {
+$(document).on('submit', '#form', function(e) {
+    e.stopImmediatePropagation();
     e.preventDefault();
-    if (document.getElementById("client_form").checkValidity()) {
+    if ($('.btn-info').length < 1) {
+        toastr.error('Seleccione almenos un producto');
+        return
+    }
+    if (document.getElementById("form").checkValidity()) {
         $("#loading").show();
-        var formData = new FormData(this);
-        $.ajax({
-            url: "?c=Clients&a=Save",
-            type: 'POST',
-            data: formData,
-            success: function (data) {
+        $.post( "?c=Clients&a=Save", $( "#form" ).serialize()).done(function(res) {
+            if (isNaN(res)) {
+                toastr.error(res);
                 $("#loading").hide();
+            } else {
                 location.reload();
-            },
-            cache: false,
-            contentType: false,
-            processData: false
+            }
         });
+    }
+});
+
+$('.products').on('click', function() {
+    $(this).toggleClass('btn-info btn-secondary');
+	if ($(this).hasClass("btn-secondary")) {
+		$(this).find('input').prop( "disabled", true );
+    } else {
+		$(this).find('input').prop( "disabled", false );
     }
 });
 </script>

@@ -1,14 +1,12 @@
 <table id="list" class="display table-striped text-md">
-  <thead>
-      <tr>
-          <th>Fecha</th>
-          <th>Nombre</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th class="text-right">Acción</th>
-      </tr>
-  </thead>
-</table> 
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Status</th>
+            <th class="text-right">Acción</th>
+        </tr>
+    </thead>
+</table>
 
 <script>
 $(document).ready(function() {
@@ -19,7 +17,7 @@ $(document).ready(function() {
         'scrollX' : true,
         'autoWidth' : false,
         'ajax': {
-            'url':'?c=Users&a=Data',
+            'url':'?c=Products&a=Data',
             'dataSrc': function (json) {
                 // Check if the data array is not empty or null
                 if (json != '') {
@@ -33,9 +31,7 @@ $(document).ready(function() {
             },
         },
         'columns': [
-            { data: 'Date' },
             { data: 'Name' },
-            { data: 'Email' },
             { data: 'Status' },
             { data: 'Action' }
         ]
@@ -46,7 +42,7 @@ $(document).on('click','.status', function(e) {
     id = $(this).data("id");
     status = $(this).data("status");
     $("#loading").show();
-    $.post("?c=Users&a=Status", { id,status }).done(function( res ) {
+    $.post("?c=Products&a=Status", { id,status }).done(function( res ) {
         location.reload();
     });
 });

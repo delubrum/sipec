@@ -9,9 +9,9 @@
         <div class="row mb-2">
             <div class="col-sm-12">
                 <button type="button" class="btn btn-primary float-right new btn-lg">
-                    <i class="fas fa-plus"></i> 
+                    <i class="fas fa-plus"></i>
                 </button>
-                <h2 class="m-0 text-dark">Usuarios</h2>
+                <h2 class="m-0 text-dark">Recibo de Material</h2>
                 
             </div>
         </div>
@@ -30,10 +30,10 @@
 </div>
 
 <script>
-$(document).on("click", ".new", function() {
-    $.post( "?c=Users&a=New").done(function( data ) {
-        $('#lgModal').modal('toggle');
-        $('#lgModal .modal-content').html(data);
+$(document).on("click", ".new", function(e) {
+    $.post( "?c=RM&a=New").done(function( data ) {
+        $('#xsModal').modal('toggle');
+        $('#xsModal .modal-content').html(data);
     });
 });
 </script>

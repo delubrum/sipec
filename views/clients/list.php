@@ -1,30 +1,55 @@
-<table id="listTable" class="display" style="width:100%">
+<table id="list" class="display table-striped text-md">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Nombre</th>
             <th>Empresa</th>
+            <th>Representante</th>
             <th>Email</th>
-            <th>Tel 1</th>
-            <th>Tel 2</th>
-            <th>Ciudad</th>
-            <th class="text-right">Acciones</th>
+            <th>Tel</th>
+            <th>Status</th>
+            <th class="text-right">Acción</th>
         </tr>
     </thead>
-    <tbody>
-        <?php foreach($this->clients->list() as $r) { ?>
-        <tr>
-            <td><?php echo $r->id; ?></td>
-            <td><?php echo $r->name; ?></td>
-            <td><?php echo $r->company; ?></td>
-            <td><?php echo $r->email; ?></td>
-            <td><?php echo $r->tel1; ?></td>
-            <td><?php echo $r->tel2 ?></td>
-            <td><?php echo $r->city ?></td>
-            <td class="text-right">
-                <button type="button" class="btn btn-primary new" data-toggle="tooltip" data-placement="top" data-id="<?php echo $r->id; ?>" title="Editar"><i class="fas fa-edit"></i></button>
-            </td>
-        </tr>
-        <?php } ?>
-    </tbody>
 </table>
+
+<script>
+$(document).ready(function() {
+    var table = $('#list').DataTable({
+        'order': [[1, 'asc']],
+        'lengthChange' : false,
+        'paginate': false,
+        'scrollX' : true,
+        'autoWidth' : false,
+        'ajax': {
+            'url':'?c=Clients&a=Data',
+            'dataSrc': function (json) {
+                // Check if the data array is not empty or null
+                if (json != '') {
+                    return json;
+                } else {
+                    // Hide the table if there is no data
+                    $('#example').hide();
+                    console.log('No data available for DataTables.');
+                    return []; // Return an empty array to prevent rendering
+                }
+            },
+        },
+        'columns': [
+            { data: 'Company' },
+            { data: 'Name' },
+            { data: 'Email' },
+            { data: 'Tel' },
+            { data: 'Status' },
+            { data: 'Action' }
+        ]
+    });
+});
+
+$(document).on('click','.status', function(e) {
+    id = $(this).data("id");
+    status = $(this).data("status");
+    $("#loading").show();
+    $.post("?c=Clients&a=Status", { id,status }).done(function( res ) {
+        location.reload();
+    });
+});
+</script>

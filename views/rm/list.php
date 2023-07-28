@@ -2,8 +2,8 @@
   <thead>
       <tr>
           <th>Fecha</th>
-          <th>Nombre</th>
-          <th>Email</th>
+          <th>Cliente</th>
+          <th>Producto</th>
           <th>Status</th>
           <th class="text-right">Acción</th>
       </tr>
@@ -19,7 +19,7 @@ $(document).ready(function() {
         'scrollX' : true,
         'autoWidth' : false,
         'ajax': {
-            'url':'?c=Users&a=Data',
+            'url':'?c=RM&a=Data',
             'dataSrc': function (json) {
                 // Check if the data array is not empty or null
                 if (json != '') {
@@ -34,20 +34,22 @@ $(document).ready(function() {
         },
         'columns': [
             { data: 'Date' },
-            { data: 'Name' },
-            { data: 'Email' },
+            { data: 'Client' },
+            { data: 'Product' },
             { data: 'Status' },
             { data: 'Action' }
         ]
     });
 });
 
-$(document).on('click','.status', function(e) {
-    id = $(this).data("id");
-    status = $(this).data("status");
+$(document).on("click", ".action", function() {
+    id = $(this).data('id');
+    status = $(this).data('status');
     $("#loading").show();
-    $.post("?c=Users&a=Status", { id,status }).done(function( res ) {
-        location.reload();
+    $.post("?c=RM&a=RM",{id,status}).done(function(data){
+        $("#loading").hide();
+        $('#xlModal').modal('toggle');
+        $('#xlModal .modal-content').html(data);
     });
 });
 </script>
