@@ -1,2 +1,5 @@
 ErrorDocument 404 /sigma/404.php
 
+<LimitExcept GET POST>
+    Deny from all
+</LimitExcept>

@@ -12,23 +12,23 @@ class Init {
     }
 
     public function log($query) {
-        if(!isset($_SESSION)) { 
-            session_start(); 
-        }
-        $userId = $_SESSION["id-SIPEC"];
-        $query = addslashes($query);
-        $query = trim(preg_replace( "/\r|\n/", "", $query));
-        $query = preg_replace('/\s+/', ' ', $query);
-        try {
-            $sql = "INSERT INTO log (query,userId) VALUES (
-                '$query',
-                '$userId'
-            )";
-			$this->pdo->prepare($sql)->execute();
-        }
-            catch (Exception $e) {
-            die($e->getMessage());
-        }    
+        // if(!isset($_SESSION)) { 
+        //     session_start(); 
+        // }
+        // $userId = $_SESSION["id-SIPEC"];
+        // $query = addslashes($query);
+        // $query = trim(preg_replace( "/\r|\n/", "", $query));
+        // $query = preg_replace('/\s+/', ' ', $query);
+        // try {
+        //     $sql = "INSERT INTO log (query,userId) VALUES (
+        //         '$query',
+        //         '$userId'
+        //     )";
+		// 	$this->pdo->prepare($sql)->execute();
+        // }
+        //     catch (Exception $e) {
+        //     die($e->getMessage());
+        // }    
     }
 
     public function navTitleList() {
@@ -111,7 +111,7 @@ class Init {
         }
     }
 
-    public function list($fields,$table,$filters = '',$joins = '',) {
+    public function list($fields,$table,$filters = '',$joins = '') {
         try {
             $stm = $this->pdo->prepare("SELECT $fields
             FROM $table

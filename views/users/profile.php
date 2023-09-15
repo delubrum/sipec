@@ -37,7 +37,7 @@
 										<hr>
 									</div>
 									<?php foreach ($this->users->PermissionsList($t->category) as $p) { ?>
-									<label class="btn <?php echo (in_array($p->id, json_decode($user->permissions))) ? 'btn-primary' : 'btn-secondary'; ?> permission" data-id="<?php echo $p->id ?>" style="cursor:pointer">
+									<label class="btn <?php echo (in_array($p->id, json_decode($id->permissions))) ? 'btn-primary' : 'btn-secondary'; ?> permission" data-id="<?php echo $p->id ?>" style="cursor:pointer">
 										<?php echo $p->name ?>										
 									</label>
 									<?php } ?>
@@ -58,7 +58,7 @@
 <?php  if (in_array(1, $permissions)) { ?>
 <script>
 $(document).on('click','.permission', function() {
-	const userId = '<?php echo $user->id ?>';
+	const userId = '<?php echo $id->id ?>';
 	const id = String($(this).data('id')); // Convierte a cadena
 	if (id != '1') {
 		$(this).toggleClass('btn-primary btn-secondary');

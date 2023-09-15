@@ -10,9 +10,9 @@
     <link rel="icon" sizes="192x192" href="assets/img/logo.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/plugins/toastr/toastr.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="assets/plugins/toastr/toastr.min.js"></script>
-    <link rel="stylesheet" href="assets/css/login2.css">
+    <link rel="stylesheet" href="assets/css/login.css">
     <noscript>This Site requires JavaScript! Este sitio require JavaScript!
         <style>
         form {display:none;}

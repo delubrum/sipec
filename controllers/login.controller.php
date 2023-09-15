@@ -14,7 +14,7 @@ class LoginController{
     if ($isLoggedIn) {
       header('Location: ?c=Init&a=Index');
     } else {
-      require_once 'views/login/index2.php';
+      require_once 'views/layout/login.php';
     }
   }
 
@@ -50,10 +50,10 @@ class LoginController{
         $this->model->insertToken($email, $random_password_hash, $random_selector_hash, $expiry_date);
         echo "ok";
       } else {
-        echo "Invalid Password";
+        echo "Error";
       }
       } else {
-        echo "User not found";
+        echo "Error";
       }
     }
   }

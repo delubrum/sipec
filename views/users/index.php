@@ -22,7 +22,20 @@
 <div class="content">
     <div class="container-fluid">
         <div class="card p-4 listTable"> 
-            <?php require_once 'list.php' ?>
+            <table id="list" class="display table-striped text-md">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Empresa</th>
+                        <th>Tel</th>
+                        <th>Status</th>
+                        <th class="text-right">Acción</th>
+                    </tr>
+                </thead>
+            </table> 
         </div>
     </div>
 </div>
@@ -34,6 +47,39 @@ $(document).on("click", ".new", function() {
     $.post( "?c=Users&a=New").done(function( data ) {
         $('#lgModal').modal('toggle');
         $('#lgModal .modal-content').html(data);
+    });
+});
+
+$(document).on('click','.status', function(e) {
+    id = $(this).data("id");
+    status = $(this).data("status");
+    $("#loading").show();
+    $.post("?c=Users&a=Status", { id,status }).done(function( res ) {
+        location.reload();
+    });
+});
+
+$(document).ready(function() {
+    var table = $('#list').DataTable({
+        'order': [[1, 'asc']],
+        'lengthChange' : false,
+        'paginate': false,
+        'scrollX' : true,
+        'autoWidth' : false,
+        'ajax': {
+            'url':'?c=Users&a=Data',
+            'dataSrc': ''
+        },
+        'columns': [
+            { data: 'type' },
+            { data: 'date' },
+            { data: 'name' },
+            { data: 'email' },
+            { data: 'company' },
+            { data: 'phone' },
+            { data: 'status' },
+            { data: 'action' }
+        ]
     });
 });
 </script>

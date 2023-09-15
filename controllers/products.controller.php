@@ -1,11 +1,9 @@
 <?php
-require_once 'models/users.php';
 require_once 'models/init.php';
 
 class ProductsController{
   private $model;
   public function __CONSTRUCT(){
-    $this->users = new Users();
     $this->init = new Init();
   }
 
@@ -39,10 +37,10 @@ class ProductsController{
       $result[] = array();
       $i=0;
       foreach($this->init->list('*','products') as $r) {
-        $result[$i]['Name'] = $r->name;
-        $result[$i]['Status'] = ($r->status != 1) ? 'Inactivo' : 'Activo';
-        $button = ($r->status != 1) ? "<span type='button' class='text-danger float-right status mx-1' data-id='$r->id' data-status='1'> <i class='fas fa-2x fa-toggle-on'></i></i></span>" : "<span type='button' class='text-success float-right status mx-1' data-id='$r->id' data-status='0'> <i class='fas fa-2x fa-toggle-on'></i></i></span>";
-        $result[$i]['Action'] = $button
+        $result[$i]['name'] = $r->name;
+        $result[$i]['status'] = ($r->status != 1) ? 'Inactivo' : 'Activo';
+        $button = ($r->status != 1) ? "<span type='button' class='text-gray float-right status mx-1' data-id='$r->id' data-status='1'> <i class='fas fa-2x fa-toggle-off'></i></i></span>" : "<span type='button' class='text-black float-right status mx-1' data-id='$r->id' data-status='0'> <i class='fas fa-2x fa-toggle-on'></i></i></span>";
+        $result[$i]['action'] = $button
         . "<button class='btn btn-primary float-right mx-1 new' data-id='$r->id'> <i class='fas fa-pen'></i></button>"
         ;
         $i++;

@@ -14,19 +14,11 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <label>* Ciudad:</label>
-                    <div class="input-group">
-                        <input class="form-control" name="city" required>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="form-group">
                     <label>* Cliente:</label>
                     <div class="input-group">
                         <select class="form-control select2" name="clientId" id="client" style="width: 100%;" required>
                             <option value=''></option>
-                            <?php foreach ($this->init->list('*','clients',' and status = 1') as $r) { ?>     
+                            <?php foreach ($this->init->list("*","users"," and type = 'Cliente' and status = 1") as $r) { ?>     
                                 <option value='<?php echo $r->id?>'><?php echo $r->company?></option>
                             <?php } ?>
                         </select>
@@ -49,7 +41,7 @@
                 <div class="form-group">
                     <label>* Fecha:</label>
                     <div class="input-group">
-                    <input type="date" class="form-control" name="date" min="<?php echo date('Y-m-d', strtotime('-2 days')); ?>">
+                    <input type="date"  onfocus='this.showPicker()' class="form-control" name="date" min="<?php echo date('Y-m-d', strtotime('-2 days')); ?>" max="<?php echo date('Y-m-d'); ?>">
                     </div>
                 </div>
             </div>
@@ -76,7 +68,6 @@ $(document).on('input', '#client', function() {
         select.append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
     }
     $("#loading").hide();
-    select.select2();
   }, "json");
 });
 
@@ -86,7 +77,6 @@ $(document).on('submit', '#form', function(e) {
     if (document.getElementById("form").checkValidity()) {
         $("#loading").show();
         $.post( "?c=RM&a=Save", $( "#form" ).serialize()).done(function(res) {
-
             var res = $.parseJSON(res);
             id = res.id;
             status = res.status;
@@ -95,7 +85,7 @@ $(document).on('submit', '#form', function(e) {
                 $("#loading").hide();
                 $('#xlModal').modal('toggle');
                 $('#xlModal .modal-content').html(data);
-                $( "#example" ).load(window.location.href + " #example" );                
+                $( "#list" ).load(window.location.href + " #list" );                
             });
             
         });

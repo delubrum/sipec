@@ -22,7 +22,15 @@
 <div class="content">
     <div class="container-fluid">
         <div class="card p-4 listTable"> 
-            <?php require_once 'list.php' ?>
+            <table id="list" class="display table-striped text-md">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Status</th>
+                        <th class="text-right">Acción</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
 </div>
@@ -35,6 +43,34 @@ $(document).on("click", ".new", function() {
     $.post( "?c=Products&a=New", {id}).done(function( data ) {
         $('#xsModal').modal('toggle');
         $('#xsModal .modal-content').html(data);
+    });
+});
+
+$(document).on('click','.status', function(e) {
+    id = $(this).data("id");
+    status = $(this).data("status");
+    $("#loading").show();
+    $.post("?c=Products&a=Status", { id,status }).done(function( res ) {
+        location.reload();
+    });
+});
+
+$(document).ready(function() {
+    var table = $('#list').DataTable({
+        'order': [[1, 'asc']],
+        'lengthChange' : false,
+        'paginate': false,
+        'scrollX' : true,
+        'autoWidth' : false,
+        'ajax': {
+            'url':'?c=Products&a=Data',
+            'dataSrc': ''
+        },
+        'columns': [
+            { data: 'name' },
+            { data: 'status' },
+            { data: 'action' }
+        ]
     });
 });
 </script>

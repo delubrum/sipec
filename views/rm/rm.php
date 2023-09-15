@@ -1,17 +1,17 @@
 <form method="post" id="form">
   <div class="modal-header">
-  <h5 class="modal-title">RM : <b><?php echo $id->id ?></b></h5>
+  <h5 class="modal-title">Recibo de Materiales</h5>
   <input type="hidden" name="id" value="<?php echo $id->id ?>">
   <input type="hidden" name="status" value="<?php echo $status ?>">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
+        <span aria-'hidden'="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="row">
         <div class="col-sm-1">
             <dl>
-                <dt><i class="fas fa-info-circle"></i> ID:</dt>
+                <dt><i class="fas fa-info-circle"></i> RM:</dt>
                 <dd class="text-md"><?php echo $id->id ?></dd>
             </dl>
         </div>
@@ -42,63 +42,40 @@
 
     </div>
 
-    <div class="table-responsive p-0" style="width:100%">
-      <table id="items" class="table-excel">
-        <thead>
-            <tr>
-                <th style="width:40px">N°</th>
-                <th>Peso</th>
-                <th>Peso<br>Cliente</th>
-                <?php if($status != 'Registrando') { ?>
-                <th>Taras</th>
-                <th>Taras<br>Cliente</th>
-                <th>Neto</th>
-                <th>Neto<br>Cliente</th>
-                <?php } ?> 
-                <th>Estado</th>
-                <th>Fugas</th>
-                <th>Derrames</th>
-                <?php if($status == 'Registrando') { ?> 
-                <th style='width:40px !important;cursor:pointer' <?php if($status == 'Registrando') { ?> class='add' data-id='<?php echo $id->id ?>' <?php } ?>" >
-                    <i class="text-primary fas fa-plus"></i>
-                </th>
-                <?php } ?> 
-            </tr>
-        </thead>
-      </table>    
-    </div>
-
+    <center>
+        <div id="spreadsheet"></div>
+    </center>
     
     <?php if($status != 'Registrando') { ?>
     <div class="row mt-4">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <div class="form-group">
                 <label>* Fecha Y Hora Cargue:</label>
                 <div class="input-group">
-                <input type="datetime-local" class="form-control inputRM" value="<?php echo (isset($id)) ? $id->datetime : ''; ?>"" required>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-3">
-            <div class="form-group">
-                <label>* Responsable:</label>
-                <div class="input-group">
-                    <select class="form-control inputRM" required>
-                        <option value=''></option>
-                        <?php foreach ($this->init->list('*','operators',' and status = 1') as $r) { ?>     
-                            <option value='<?php echo $r->id?>'><?php echo $r->name?></option>
-                        <?php } ?>
-                    </select>
+                <input type="datetime-local" onfocus='this.showPicker()' class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="datetime" value="<?php echo (isset($id)) ? $id->datetime : ''; ?>"" required>
                 </div>
             </div>
         </div>
 
         <div class="col-sm-2">
             <div class="form-group">
+                <label>* Responsable:</label>
+                <div class="input-group">
+                    <select class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="operatorId" required>
+                        <option value=''></option>
+                        <?php foreach ($this->init->list("*","users"," and type = 'Operario' and status = 1") as $r) { ?>     
+                            <option value='<?php echo $r->id?>' <?php echo (isset($id->operatorId) and $id->operatorId == $r->id) ? 'selected' : '' ?>><?php echo $r->username?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-1">
+            <div class="form-group">
                 <label>* Reactor N°:</label>
                 <div class="input-group">
-                <input type="number" step="1" min="1" class="form-control inputRM" value="<?php echo (isset($id)) ? $id->reactor : ''; ?>" required>
+                <input type="number" step="1" min="1" class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="reactor" value="<?php echo (isset($id)) ? $id->reactor : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -107,25 +84,45 @@
             <div class="form-group">
                 <label>* Pasta que no Entra:</label>
                 <div class="input-group">
-                <input type="number" step="0.01" class="form-control inputRM" id="paste" value="<?php echo $id->paste ?>" required>
+                <input type="number" step="0.01" class="form-control inputRM" id="paste" data-id="<?php echo $id->id ?>" data-field="paste" value="<?php echo $id->paste ?>" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-1">
+            <div class="form-group">
+                <label>* Total a Cargar:</label>
+                <div class="input-group">
+                <span id="total"> <?php echo $net - $id->paste ?> </span>
                 </div>
             </div>
         </div>
 
         <div class="col-sm-2">
             <div class="form-group">
-                <label>* Total a Cargar:</label>
+                <label>* Devolver:</label>
                 <div class="input-group">
-                <input type="number" step="0.01" class="form-control" id="total" value="<?php echo $id->paste * $net ?>" readonly>
+                <input type="number" step="1" min="1" class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="toreturn" value="<?php echo (isset($id)) ? $id->toreturn : ''; ?>" required>
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>* Excedente:</label>
+                <div class="input-group">
+                <input type="number" step="1" min="1" class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="surplus" value="<?php echo (isset($id)) ? $id->surplus : ''; ?>" required>
+                </div>
+            </div>
+        </div>
+
+
 
         <div class="col-sm-12">
             <div class="form-group">
                 <label>Notas:</label>
                 <div class="input-group">
-                <textarea style="width:100%" class="form-control form-control-sm inputRM" type="number"><?php echo (isset($id)) ? $id->notes : ''; ?></textarea>
+                <textarea style="width:100%" class="form-control form-control-sm inputRM" data-id="<?php echo $id->id ?>" data-field="notes"><?php echo (isset($id)) ? $id->notes : ''; ?></textarea>
                 </div>
             </div>
         </div>
@@ -146,138 +143,223 @@
 
 <script>
 
-$(document).ready(function() {
-table = $('#items').DataTable({
-    'order': [[1, 'asc']],
-    'lengthChange' : false,
-    'paginate': false,
-    'scrollX' : true,
-    'autoWidth' : false,
-    'ordering': false,
-    'searching': false,
-    'info':     false,
-    'ajax': {
-        'url':'?c=RM&a=ItemsData&id=<?php echo $id->id ?>&status=<?php echo $status ?>',
-        'dataSrc': function (json) {
-            // Check if the data array is not empty or null
-            if (json != '') {
-                return json;
-            } else {
-                // Hide the table if there is no data
-                $('#example').hide();
-                console.log('No data available for DataTables.');
-                return []; // Return an empty array to prevent rendering
-            }
-        },
-    },
-    'columns': [
-        { data: 'Index' },
-        { data: 'kg' },
-        { data: 'kg_client' },
-        <?php if($status != 'Registrando') { ?> 
-        { data: 'tara' },
-        { data: 'tara_client' },
-        { data: 'net' },
-        { data: 'net_client' },
+var save = function(instance, cell, x, y, value) {
+    data = table.getData();
+    id = <?php echo $id->id ?>;
+    $("#loading").show();
+    $.post("?c=RM&a=UpdateData",{id,data}).done(function(data){
+        $("#loading").hide();
+        table.refresh();
+    });
+}
+
+var SUMCOL = function(instance, columnId) {
+    var total = 0;
+    for (var j = 0; j < instance.options.data.length; j++) {
+        if (Number(instance.records[j][columnId].innerHTML)) {
+            total += Number(instance.records[j][columnId].innerHTML);
+        }
+    }
+    return total.toFixed(2);
+}
+
+var table = jspreadsheet(document.getElementById('spreadsheet'), {
+    url: "?c=RM&a=ItemsData&id=<?php echo $id->id ?>&status=<?php echo $status ?>",
+    minDimensions:[10,1],
+    autoIncrement: false,
+    allowInsertColumn: false, // Allow ly inserting columns
+    allowDeleteColumn: false, // Allow ly deleting columns
+    allowRenameColumn: false, // Allow ly deleting columns
+    columnDrag:true,
+    allowExport: false,
+    parseFormulas: true,
+    onafterchanges: save,
+
+
+    <?php if($status != 'Registrando') { ?>
+      footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)','=SUMCOL(TABLE(), 2)','=SUMCOL(TABLE(), 3)','=SUMCOL(TABLE(), 4)','=SUMCOL(TABLE(), 5)']],
+    <?php } else { ?>
+      footers: [['=ROUND(SUM(A1:A100),2)','=ROUND(SUM(B1:B100),2)']],
+    <?php } ?>
+
+    columns: [
+      { 
+        title:'Peso',
+        type:'numeric',
+        width:70,
+        <?php if($status != 'Registrando') { ?>
+        readOnly: true,
         <?php } ?> 
-        { data: 'Status' },
-        { data: 'Leaks' },
-        { data: 'Spills' },
-        <?php if($status == 'Registrando') { ?> 
-        { data: 'Action' }
+      },
+      { 
+        title:'Peso Cliente',
+        type:'numeric',
+        width:100,
+      },
+      { 
+        title:'Taras',
+        type:'numeric',
+        width:100,
+        <?php if($status == 'Registrando') { ?>
+        readOnly: true,
+        type:'hidden',
         <?php } ?> 
+      },
+      { 
+        title:'Taras Cliente',
+        type:'numeric',
+        width:100,
+        <?php if($status == 'Registrando') { ?>
+        readOnly: true,
+        type:'hidden',
+        <?php } ?> 
+      },
+      { 
+        title:'Neto',
+        width:70,
+        type:'numeric',
+        readOnly: true,
+        <?php if($status == 'Registrando') { ?>
+        type:'hidden',
+        <?php } ?> 
+      },
+      { 
+        title:'Neto cliente',
+        type:'numeric',
+        width:100,
+        readOnly: true,
+        <?php if($status == 'Registrando') { ?>
+        type:'hidden',
+        <?php } ?> 
+      },
+      {
+        type: 'dropdown',
+        title:'Estado',
+        width:100,
+        source:[
+          "Bueno",
+          "Malo",
+        ],
+        validate: 'required',
+        <?php if($status != 'Registrando') { ?>
+        readOnly: true,
+        <?php } ?> 
+      },
+      { 
+        title:'Derrames Vehículo',
+        type: 'checkbox',
+        width:150,
+        <?php if($status != 'Registrando') { ?>
+        readOnly: true,
+        <?php } ?> 
+      },
+      { 
+        title:'Derrames Caneca',
+        type: 'checkbox',
+        width:150,
+        <?php if($status != 'Registrando') { ?>
+        readOnly: true,
+        <?php } ?> 
+      },
+      { 
+        title:'Derrames Planta',
+        type: 'checkbox',
+        width:150,
+        <?php if($status == 'Registrando') { ?>
+        readOnly: true,
+        type:'hidden',
+        <?php } ?> 
+      },
     ],
-});
-setTimeout( function () {
-    table.draw();
-}, 200 );
-
-});
-
-
-$(document).on("click", ".add", function(e) {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    id = $(this).data('id');
-    $("#loading").show();
-    $.post("?c=RM&a=SaveItem",{id}).done(function(data){
-        $("#loading").hide();
-        table.ajax.reload( null, false );
-        // setTimeout( function () {
-        //     $('.kg:last').focus();
-        //     $('.kg:last').val('');
-        // }, 100 );
-    });
-});
-
-$(document).on('click','.delete', function(e) {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    id = $(this).data("id");
-    e.preventDefault();
-    Swal.fire({
-        title: 'Desea eliminar el item?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si',
-        cancelButtonText: 'No'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $("#loading").show();
-            $.post("?c=RM&a=DeleteItem",{id}).done(function(data){
-                $("#loading").hide();
-                table.ajax.reload( null, false );
-            });
+    updateTable:function(instance, cell, col, row, val, label, cellName) {
+        if (col == 4) {
+            cell.innerHTML = (table.getValue('A'+row)-(table.getValue('C'+row))).toFixed(2);
         }
-    })
-});
-
-$(document).on("change", ".input", function(e) {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    id = $(this).data('id');
-    field = $(this).data('field');
-    value = $(this).val();
-    $("#loading").show();
-    $.post("?c=RM&a=UpdateItem",{id,field,value}).done(function(data){
-        $("#loading").hide();
-        table.ajax.reload( null, false );
-    });
-});
-
-$(document).on("click", ".spills", function(e) {
-    $(this).toggleClass('btn-info btn-secondary');
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    id = $(this).parent().data('id');
-    field = 'spills';
-    const arr = [];
-    $(this).parent().find('.spills').each(function() {
-        if($(this).hasClass('btn-info')){
-            arr.push($(this).html());
+        if (col == 5) {
+            cell.innerHTML = (table.getValue('B'+row)-(table.getValue('D'+row))).toFixed(2);
         }
-    });
-    const value = JSON.stringify(arr);
-    $("#loading").show();
-    $.post("?c=RM&a=UpdateItem",{id,field,value}).done(function(data){
-        $("#loading").hide();
-        table.ajax.reload( null, false );
-    });
+    },
+    text:{
+        insertANewRowBefore:'Insertar fila antes',
+        insertANewRowAfter:'Insertar fila despues',
+        deleteSelectedRows:'Borrar filas',
+        copy:'Copiar',
+        paste:'Pegar',
+        about: '',
+        areYouSureToDeleteTheSelectedRows:'Desea borrar las filas seleccionadas?',
+    }
 });
 
 
-$(document).on("change", "#paste", function(e) {
-    paste = $('#paste').val();
-    net = <?php echo $net ?>;
-    total = Number(net) - Number(paste);
-    $('#total').val(total)
-});
+
+// Function to check for empty fields in JSON data
+function hasEmptyFields(data) {
+  function checkObject(obj) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        
+        if (value === '' || value === null || value === undefined) {
+          return true; // Found an empty field, return true
+        } else if (typeof value === 'object') {
+          if (checkObject(value)) {
+            return true; // Recursively found an empty field, return true
+          }
+        }
+      }
+    }
+    
+    return false; // No empty fields found in this object
+  }
+
+  return checkObject(data);
+}
+
+<?php if($status != 'Registrando') { ?> 
+    $(document).on("change", ".inputRM", function(e) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        id = $(this).data('id');
+        field = $(this).data('field');
+        value = $(this).val();
+        $("#loading").show();
+        $.post("?c=RM&a=Update",{id,field,value}).done(function(data){
+            $("#loading").hide();
+            paste = $('#paste').val();
+            net = data;
+            total = Number(net) - Number(paste);
+            $('#total').html(total)
+        });
+    });
+<?php } ?> 
 
 $(document).on('submit', '#form', function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
+    if (hasEmptyFields(table.getColumnData(0))) {
+        toastr.error('Complete la columna Peso');
+        return
+    };
+    if (hasEmptyFields(table.getColumnData(6))) {
+        toastr.error('Complete la columna Estado');
+        return
+    };
+
+
+    <?php if($status != 'Registrando') { ?> 
+    if (hasEmptyFields(table.getColumnData(1))) {
+        toastr.error('Complete la columna Peso Cliente');
+        return
+    };
+    if (hasEmptyFields(table.getColumnData(2))) {
+        toastr.error('Complete la columna Tara');
+        return
+    };
+    if (hasEmptyFields(table.getColumnData(3))) {
+        toastr.error('Complete la columna Tara Cliente');
+        return
+    };
+    <?php } ?> 
     if (document.getElementById("form").checkValidity()) {
         $("#loading").show();
         $.post( "?c=RM&a=Update", $( "#form" ).serialize()).done(function(res) {

@@ -36,12 +36,15 @@ class UsersController{
       $result[] = array();
       $i=0;
       foreach($this->init->list('*','users') as $r) {
-        $result[$i]['Date'] = $r->createdAt;
-        $result[$i]['Name'] = $r->username;
-        $result[$i]['Email'] = $r->email;
-        $result[$i]['Status'] = ($r->status != 1) ? 'Inactivo' : 'Activo';
-        $button = ($r->status != 1) ? "<span type='button' class='text-danger float-right status mx-1' data-id='$r->id' data-status='1'> <i class='fas fa-2x fa-toggle-on'></i></i></span>" : "<span type='button' class='text-success float-right status mx-1' data-id='$r->id' data-status='0'> <i class='fas fa-2x fa-toggle-on'></i></i></span>";
-        $result[$i]['Action'] = $button
+        $result[$i]['type'] = $r->type;
+        $result[$i]['date'] = $r->createdAt;
+        $result[$i]['name'] = $r->username;
+        $result[$i]['email'] = $r->email;
+        $result[$i]['company'] = $r->company;
+        $result[$i]['phone'] = $r->phone;
+        $result[$i]['status'] = ($r->status != 1) ? 'Inactivo' : 'Activo';
+        $button = ($r->status != 1) ? "<span type='button' class='text-gray float-right status mx-1' data-id='$r->id' data-status='1'> <i class='fas fa-2x fa-toggle-off'></i></i></span>" : "<span type='button' class='text-black float-right status mx-1' data-id='$r->id' data-status='0'> <i class='fas fa-2x fa-toggle-on'></i></i></span>";
+        $result[$i]['action'] = $button
         . "<a href='?c=Users&a=Profile&id=$r->id' class='btn btn-primary float-right mx-1'> <i class='fas fa-pen'></i></a>"
         ;
         $i++;
@@ -56,14 +59,13 @@ class UsersController{
     require_once "middlewares/check.php";
     if (in_array(1, $permissions) and isset($_REQUEST["id"])){
       $filters = "and id = " . $_REQUEST['id'];
-      $user = $this->init->get('*','users',$filters);
+      $id = $this->init->get('*','users',$filters);
+      $a = 'Profile';
+      require_once 'views/layout/header.php';
+      require_once 'views/users/profile.php';
     } else {
-      $filters = "and id = " . $_SESSION["id-SIPEC"];
-      $user = $this->init->get('*','users',$filters);
+      $this->init->redirect();
     }
-    $a = 'Profile';
-    require_once 'views/layout/header.php';
-    require_once 'views/users/profile.php';
   }
 
   public function Status(){
@@ -85,6 +87,11 @@ class UsersController{
       $item->email=$_REQUEST['email'];
       $item->lang='en';
       $item->password=$_REQUEST['newpass'];
+      $item->type=$_REQUEST['type'];
+      $item->company=$_REQUEST['company'];
+      $item->phone=$_REQUEST['phone'];
+      $item->city=$_REQUEST['city'];
+      $item->products= (isset($_REQUEST['products'])) ? json_encode($_REQUEST['products']) : '[]';
       $cpass=$_REQUEST['cpass'];
       if ($cpass != '' and $cpass != $item->password) {
         echo "Las contraseñas no coinciden";

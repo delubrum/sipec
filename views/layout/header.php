@@ -24,7 +24,7 @@
         </style>
     </noscript>
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <!-- Bootstrap 4 -->
     <script src="https://adminlte.io/themes/v3/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
@@ -42,7 +42,7 @@
 
     <!-- Modals -->
     <div class="modal fade" id="xlModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl" role="document" style="min-width:90%">
             <div class="modal-content">
             </div>
         </div>
@@ -96,28 +96,13 @@
                 </li>
                 
             -->
+                <li class="nav-item">
+                    <span  class="dropdown-item float-rigt"><?php echo $user->username ?> </span>
+                </li>
       
-            <!-- User Dropdown Menu -->
-        <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-            <i class="far fa-user text-dark"></i> 
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="?c=Users&a=Profile" class="dropdown-item">
-                <!-- Message Start -->
-                <div class="media">
-                <i class="far fa-user fa-3x mr-3"></i>
-                <div class="media-body">
-                    <h3 class="dropdown-item-title">
-                    <?php echo $user->username ?>
-                    </h3>
-                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> <?php echo $user->createdAt ?></p>
-                </div>
-                </div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="?c=Login&a=Logout" class="dropdown-item dropdown-footer float-rigt"><i class="fa fa-times"></i> Logout</a>
-            </div>
+                <li class="nav-item">
+                   <a href="?c=Login&a=Logout" class="dropdown-item float-rigt"><i class="fa fa-times"></i></a>
+                </li>
 
             </ul>
         </nav>
@@ -178,29 +163,4 @@
 
         <!-- Content Wrapper. Contains page content -->
 
-        <div class="content-wrapper">
-
-<script>
-// $(document).ready(function(){
-//     alerts();
-//     setInterval(function(){ 
-//         alerts();; 
-//  }, 5000);
-// });    
-
-// function alerts() {
-//     $.post('?c=Init&a=Alerts', { 'id': true },function(data) {
-//         if(data.trim() != ''){
-//         $("#task-counter").html(`<i class="far fa-bell"></i><span class="badge bg-danger navbar-badge alert">${data}</span>`);
-//         } else {
-//             $("#task-counter").html(`<i class="far fa-bell"></i>`);
-//         }
-//     }); 
-// }
-
-// $('#task-dropdown').on('show.bs.dropdown', function () {
-//     $.post("?c=Init&a=Alerts", function(data) {
-//         $("#task-alerts").html( data );
-//     });
-// });
-</script>
+        <div class="content-wrapper" style="background-image: url('assets/img/bubbles.png');background-repeat: no-repeat;background-size:600px;">

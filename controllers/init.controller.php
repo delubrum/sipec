@@ -1,12 +1,10 @@
 <?php
 require_once 'models/init.php';
-require_once 'models/users.php';
 
 class InitController{
   private $model;
   public function __CONSTRUCT(){
     $this->init = new Init();
-    $this->users = new Users();
   }
 
   public function Index(){
