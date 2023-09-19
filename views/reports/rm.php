@@ -84,7 +84,6 @@
         <th>Neto</th>
         <th>Neto<br>Cliente</th>
         <th>Estado</th>
-        <th>Fugas</th>
         <th>Derrames</th>
     </tr>
     <?php 
@@ -101,8 +100,7 @@
       <td><?php $net += $r->kg - $r->tara; echo $r->kg - $r->tara ?></td>
       <td><?php $net_client += $r->kg_client - $r->tara_client; echo $r->kg_client - $r->tara_client ?></td>
       <td><?php echo $r->status ?></td>
-      <td><?php echo $r->leaks ?></td>
-      <td><?php echo implode(', ', json_decode($r->spills)) ?></td>        
+      <td><?php echo $r->spills ?></td>        
     </tr>
     <?php $i++; } ?>
     <tr>

@@ -91,15 +91,6 @@
 
         <div class="col-sm-1">
             <div class="form-group">
-                <label>* Total a Cargar:</label>
-                <div class="input-group">
-                <span id="total"> <?php echo $net - $id->paste ?> </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-2">
-            <div class="form-group">
                 <label>* Devolver:</label>
                 <div class="input-group">
                 <input type="number" step="1" min="1" class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="toreturn" value="<?php echo (isset($id)) ? $id->toreturn : ''; ?>" required>
@@ -107,11 +98,20 @@
             </div>
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-sm-1">
             <div class="form-group">
                 <label>* Excedente:</label>
                 <div class="input-group">
                 <input type="number" step="1" min="1" class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="surplus" value="<?php echo (isset($id)) ? $id->surplus : ''; ?>" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>* Total a Cargar:</label>
+                <div class="input-group mt-1 h5 text-primary">
+                <span id="total"> </span>
                 </div>
             </div>
         </div>
@@ -174,12 +174,10 @@ var table = jspreadsheet(document.getElementById('spreadsheet'), {
     allowExport: false,
     parseFormulas: true,
     onafterchanges: save,
-
-
     <?php if($status != 'Registrando') { ?>
-      footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)','=SUMCOL(TABLE(), 2)','=SUMCOL(TABLE(), 3)','=SUMCOL(TABLE(), 4)','=SUMCOL(TABLE(), 5)']],
+        footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)','=SUMCOL(TABLE(), 2)','=SUMCOL(TABLE(), 3)','=SUMCOL(TABLE(), 4)','=SUMCOL(TABLE(), 5)']],
     <?php } else { ?>
-      footers: [['=ROUND(SUM(A1:A100),2)','=ROUND(SUM(B1:B100),2)']],
+        footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)']],
     <?php } ?>
 
     columns: [
@@ -272,6 +270,9 @@ var table = jspreadsheet(document.getElementById('spreadsheet'), {
       },
     ],
     updateTable:function(instance, cell, col, row, val, label, cellName) {
+        paste = $('#paste').val();
+        total = SUMCOL(table, 4);
+        $('#total').html(total-paste);
         if (col == 4) {
             cell.innerHTML = (table.getValue('A'+row)-(table.getValue('C'+row))).toFixed(2);
         }
@@ -326,9 +327,8 @@ function hasEmptyFields(data) {
         $.post("?c=RM&a=Update",{id,field,value}).done(function(data){
             $("#loading").hide();
             paste = $('#paste').val();
-            net = data;
-            total = Number(net) - Number(paste);
-            $('#total').html(total)
+            total = SUMCOL(table, 4);
+            $('#total').html(total-paste)
         });
     });
 <?php } ?> 

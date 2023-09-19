@@ -49,45 +49,11 @@
 
     </div>
 
-    <div class="table-responsive p-0 mb-4" style="width:100%">
-      <table id="turns" class="table-excel">
-        <thead>
-            <tr>
-                <th style="width:40px">Turno</th>
-                <th>Inicio</th>
-                <th>Fin</th>
-                <th style='width:40px !important'>
-                    <button class='btn btn-primary addTurn' data-id='<?php echo $id->id ?>'><i class="fas fa-plus"></i></button>
-                </th>
-            </tr>
-        </thead>
-      </table>   
-    </div> 
+    <center>
+    <div id="spreadsheet"></div>
 
-    <div class="table-responsive p-0" style="width:100%">
-      <table id="items" class="table-excel">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th style="width:40px">N°</th>
-                <th>Peso</th>
-                <th>Tambor</th>
-                <th>Hora Inicio</th>
-                <th>Hora Fin</th>
-                <th>T° Inicio</th>
-                <th>T° Fin</th>
-                <th>Hora Caldera</th>
-                <th>T° Caldera</th>
-                <th>Responsable</th>
-                <th style='width:40px !important'>
-                    <button class='btn btn-primary add' data-id='<?php echo $id->id ?>'><i class="fas fa-plus"></i></button>
-                </th>
-            </tr>
-        </thead>
-      </table>    
-    </div>
+    <div id="spreadsheet2"></div>
 
-    
     <div class="row mt-4">
         <div class="col-sm-4">
             <div class="form-group">
@@ -215,88 +181,239 @@
 
 
 <script>
-$(document).ready(function() {
-table = $('#items').DataTable({
-    'order': [[1, 'asc']],
-    'lengthChange' : false,
-    'paginate': false,
-    'scrollX' : true,
-    'autoWidth' : false,
-    'ordering': false,
-    'searching': false,
-    'info':     false,
-    language : {
-        'zeroRecords': 'Agrega un item'          
+
+var customColumn = {
+    // Methods
+    closeEditor : function(cell, save) {
+        var value = cell.children[0].value;
+        cell.innerHTML = value;
+        return value;
     },
-    'ajax': {
-        'url':'?c=BC&a=ItemsData&id=<?php echo $id->id ?>',
-        'dataSrc': function (json) {
-            // Check if the data array is not empty or null
-            if (json != '') {
-                return json;
-            } else {
-                return []; // Return an empty array to prevent rendering
-            }
-        },
+    openEditor : function(cell) {
+        // Create input
+        var element = document.createElement('input');
+        element.type = "datetime-local";
+        element.value = cell.innerHTML;
+        cell.innerHTML = '';
+        cell.appendChild(element);
+        element.focus();
     },
-    'columns': [
-        { data: 'date' },
-        { data: 'index' },
-        { data: 'net' },
-        { data: 'drum' },
-        { data: 'start' },
-        { data: 'end' },
-        { data: 't0' },
-        { data: 't1' },
-        { data: 'boilerTime' },
-        { data: 'boilerT' },
-        { data: 'user' },
-        { data: 'action' }
+    getValue : function(cell) {
+        return cell.innerHTML;
+    },
+    setValue : function(cell, value) {
+        cell.innerHTML = value;
+    }
+}
+
+var save = function(instance, cell, x, y, value) {
+    data = table.getData();
+    id = <?php echo $id->id ?>;
+    field = 'turns';
+    $("#loading").show();
+    $.post("?c=BC&a=UpdateData",{id,data,field}).done(function(data){
+        $("#loading").hide();
+        table.refresh();
+    });
+}
+
+var save2 = function(instance, cell, x, y, value) {
+    data = table2.getData();
+    id = <?php echo $id->id ?>;
+    field = 'data';
+    $("#loading").show();
+    $.post("?c=BC&a=UpdateData",{id,data,field}).done(function(data){
+        $("#loading").hide();
+        table.refresh();
+    });
+}
+
+var table = jspreadsheet(document.getElementById('spreadsheet'), {
+    "url":"?c=BC&a=TurnsData&id=<?php echo $id->id ?>",
+    minDimensions:[2,1],
+    autoIncrement: false,
+    allowInsertColumn: false, // Allow ly inserting columns
+    allowDeleteColumn: false, // Allow ly deleting columns
+    allowRenameColumn: false, // Allow ly deleting columns
+    columnDrag:true,
+    allowExport: false,
+    parseFormulas: true,
+    onafterchanges: save,
+    columns: [
+      { 
+        title:'date',
+        type:'calendar',
+        width:100,
+      },
+      { 
+        title:'Net',
+        type:'text',
+        width:200,
+      },
     ],
+    text:{
+        insertANewRowBefore:'Insertar fila antes',
+        insertANewRowAfter:'Insertar fila despues',
+        deleteSelectedRows:'Borrar filas',
+        copy:'Copiar',
+        paste:'Pegar',
+        about: '',
+        areYouSureToDeleteTheSelectedRows:'Desea borrar las filas seleccionadas?',
+    }
 });
 
-setTimeout( function () {
-    table.draw();
-}, 200 );
+var save = function(instance, cell, x, y, value) {
+    data = table.getData();
+    id = <?php echo $id->id ?>;
+    $("#loading").show();
+    $.post("?c=RM&a=UpdateData",{id,data}).done(function(data){
+        $("#loading").hide();
+        table.refresh();
+    });
+}
 
-tableb = $('#turns').DataTable({
-    'order': [[1, 'asc']],
-    'lengthChange' : false,
-    'paginate': false,
-    'scrollX' : true,
-    'autoWidth' : false,
-    'ordering': false,
-    'searching': false,
-    'info':     false,
-    language : {
-        'zeroRecords': 'Agrega un item'          
-    },
-    'ajax': {
-        'url':'?c=BC&a=TurnsData&id=<?php echo $id->id ?>',
-        'dataSrc': function (json) {
-            // Check if the data array is not empty or null
-            if (json != '') {
-                return json;
-            } else {
-                return []; // Return an empty array to prevent rendering
-            }
-        },
-    },
-    'columns': [
-        { data: 'index' },
-        { data: 'start' },
-        { data: 'end' },
-        { data: 'action' }
+var SUMCOL = function(instance, columnId) {
+    var total = 0;
+    for (var j = 0; j < instance.options.data.length; j++) {
+        if (Number(instance.records[j][columnId].innerHTML)) {
+            total += Number(instance.records[j][columnId].innerHTML);
+        }
+    }
+    return total.toFixed(2);
+}
+
+var table2 = jspreadsheet(document.getElementById('spreadsheet2'), {
+    url: "?c=BC&a=ItemsData&id=<?php echo $id->id ?>",
+    minDimensions:[10,1],
+    autoIncrement: false,
+    allowInsertColumn: false, // Allow ly inserting columns
+    allowDeleteColumn: false, // Allow ly deleting columns
+    allowRenameColumn: false, // Allow ly deleting columns
+    columnDrag:true,
+    allowExport: false,
+    parseFormulas: true,
+    onafterchanges: save,
+    <?php if($status != 'Registrando') { ?>
+        footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)','=SUMCOL(TABLE(), 2)','=SUMCOL(TABLE(), 3)','=SUMCOL(TABLE(), 4)','=SUMCOL(TABLE(), 5)']],
+    <?php } else { ?>
+        footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)']],
+    <?php } ?>
+
+    columns: [
+      { 
+        title:'Peso',
+        type:'numeric',
+        width:70,
+        <?php if($status != 'Registrando') { ?>
+        readOnly: true,
+        <?php } ?> 
+      },
+      { 
+        title:'Peso Cliente',
+        type:'numeric',
+        width:100,
+      },
+      { 
+        title:'Taras',
+        type:'numeric',
+        width:100,
+        <?php if($status == 'Registrando') { ?>
+        readOnly: true,
+        type:'hidden',
+        <?php } ?> 
+      },
+      { 
+        title:'Taras Cliente',
+        type:'numeric',
+        width:100,
+        <?php if($status == 'Registrando') { ?>
+        readOnly: true,
+        type:'hidden',
+        <?php } ?> 
+      },
+      { 
+        title:'Neto',
+        width:70,
+        type:'numeric',
+        readOnly: true,
+        <?php if($status == 'Registrando') { ?>
+        type:'hidden',
+        <?php } ?> 
+      },
+      { 
+        title:'Neto cliente',
+        type:'numeric',
+        width:100,
+        readOnly: true,
+        <?php if($status == 'Registrando') { ?>
+        type:'hidden',
+        <?php } ?> 
+      },
+      {
+        type: 'dropdown',
+        title:'Estado',
+        width:100,
+        source:[
+          "Bueno",
+          "Malo",
+        ],
+        validate: 'required',
+        <?php if($status != 'Registrando') { ?>
+        readOnly: true,
+        <?php } ?> 
+      },
+      { 
+        title:'Derrames Vehículo',
+        type: 'checkbox',
+        width:150,
+        <?php if($status != 'Registrando') { ?>
+        readOnly: true,
+        <?php } ?> 
+      },
+      { 
+        title:'Derrames Caneca',
+        type: 'checkbox',
+        width:150,
+        <?php if($status != 'Registrando') { ?>
+        readOnly: true,
+        <?php } ?> 
+      },
+      { 
+        title:'Derrames Planta',
+        type: 'checkbox',
+        width:150,
+        <?php if($status == 'Registrando') { ?>
+        readOnly: true,
+        type:'hidden',
+        <?php } ?> 
+      },
     ],
+    updateTable:function(instance, cell, col, row, val, label, cellName) {
+        paste = $('#paste').val();
+        total = SUMCOL(table, 4);
+        $('#total').html(total-paste);
+        if (col == 4) {
+            cell.innerHTML = (table.getValue('A'+row)-(table.getValue('C'+row))).toFixed(2);
+        }
+        if (col == 5) {
+            cell.innerHTML = (table.getValue('B'+row)-(table.getValue('D'+row))).toFixed(2);
+        }
+    },
+    text:{
+        insertANewRowBefore:'Insertar fila antes',
+        insertANewRowAfter:'Insertar fila despues',
+        deleteSelectedRows:'Borrar filas',
+        copy:'Copiar',
+        paste:'Pegar',
+        about: '',
+        areYouSureToDeleteTheSelectedRows:'Desea borrar las filas seleccionadas?',
+    }
 });
 
-setTimeout( function () {
-    tableb.draw();
-}, 200 );
 
 
-});
 
+        
 
 
 

@@ -1,11 +1,15 @@
 <header>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
-		
-		<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
-		<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
-		<script src="https://jsuites.net/v4/jsuites.js"></script>
-		<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+	
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+	
+	<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+	<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+	<script src="https://jsuites.net/v4/jsuites.js"></script>
+	<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+
+	<link rel="stylesheet" type="text/css" href="http://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.css" />
+	<script src="http://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.js"></script>
 </header>
 
 <!-- Content Header (Page header) -->

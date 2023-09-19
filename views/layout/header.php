@@ -96,8 +96,8 @@
                 </li>
                 
             -->
-                <li class="nav-item">
-                    <span  class="dropdown-item float-rigt"><?php echo $user->username ?> </span>
+                <li class="nav-item mt-1 mr-2">
+                    <span  class=""><?php echo $user->username ?> </span>
                 </li>
       
                 <li class="nav-item">
@@ -163,4 +163,4 @@
 
         <!-- Content Wrapper. Contains page content -->
 
-        <div class="content-wrapper" style="background-image: url('assets/img/bubbles.png');background-repeat: no-repeat;background-size:600px;">
+        <div class="content-wrapper" style="background-image: url('assets/img/plants.png');background-repeat: no-repeat;background-size:700px;">

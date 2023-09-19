@@ -71,9 +71,9 @@ class RMController{
         }
         $result[$i]['status'] = $status;
         $button = ($status != 'Cerrado') ? "<button type='button' data-id='$r->id' data-status='$status' class='btn btn-primary float-right mx-1 action'> <i class='fas fa-pen'></i></button>" : "";
-        $rm = ($status != 'Pendiente' and $status != 'Registrando') ? "<a href='?c=RM&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-success float-right mx-1'>RM</a>" : "";
-        $bc = ($status == 'Cerrado') ? "<a href='?c=BC&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-warning float-right mx-1'>BC</a>" : "";
-        $pd = ($status == 'Cerrado') ? "<a href='?c=RM&a=PD&id=$r->id' type='button' target='_blank' class='btn btn-info float-right mx-1'>PD</a>" : "";
+        $rm = ($status != 'Pendiente' and $status != 'Registrando') ? "<a href='?c=RM&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-primary float-right mx-1'>RM</a>" : "";
+        $bc = ($status == 'Cerrado') ? "<a href='?c=BC&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-primary float-right mx-1'>BC</a>" : "";
+        $pd = ($status == 'Cerrado') ? "<a href='?c=RM&a=PD&id=$r->id' type='button' target='_blank' class='btn btn-primary float-right mx-1'>PD</a>" : "";
 
         $result[$i]['action'] = "$button $rm $bc $pd";
         $i++;
@@ -139,19 +139,6 @@ class RMController{
     }
   }
 
-  public function SaveItems(){
-    require_once "middlewares/check.php";
-    if (in_array(3, $permissions)) {
-      $item = new stdClass();
-      $item->rmId = $_REQUEST['id'];
-      $item->spills = "[]";
-      $id = $this->init->save('rm_items',$item);
-      echo $id;
-    } else {
-      $this->init->redirect();
-    }
-  }
-
   public function Update(){
     require_once "middlewares/check.php";
     if (in_array(3, $permissions)) {
@@ -168,7 +155,24 @@ class RMController{
         $item->closedAt = date("Y-m-d H:i:s");
         $itemb = new stdClass();
         $itemb->rmId = $_REQUEST['id'];
+        $itemb->turns = '[]';
+        $itemb->data = '[]';
+        $items = new stdClass();
         $this->init->save('bc',$itemb);
+        $id = $_REQUEST['id'];
+        foreach(json_decode($this->init->get("data","rm","and id = $id")->data) as $r) {
+          $items->rmId = $id;
+          $items->kg = $r[0];
+          $items->kg_client = $r[1];
+          $items->tara = $r[2];
+          $items->tara_client = $r[3];
+          $items->status = $r[6];
+          $car = ($r[7] == "true") ? 'Vehículo' : '';
+          $bucket = ($r[8] == "true") ? 'Caneca' : '';
+          $plant = ($r[9] == "true") ? 'Planta' : '';
+          $items->spills = "$car $bucket $plant";
+          $this->init->save('rm_items',$items);
+        }
       }
       $this->init->update('rm',$item,$_REQUEST['id']);
     } else {

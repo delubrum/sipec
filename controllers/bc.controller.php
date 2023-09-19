@@ -22,27 +22,45 @@ class BCController{
     }
   }
 
+  public function UpdateData(){
+    require_once "middlewares/check.php";
+    if (in_array(3, $permissions)) {
+      $item = new stdClass();
+      $item->{$_REQUEST['field']} = json_encode($_REQUEST['data']);
+      $id = $this->init->update('bc',$item,$_REQUEST['id']);
+      // print_r($item);
+    } else {
+      $this->init->redirect();
+    }
+  }
+
   public function TurnsData(){
     header('Content-Type: application/json');
     require_once "middlewares/check.php";
     if (in_array(3, $permissions)) {
       $result[] = array();
       $i=0;
-      $filters = "and bcId = " . $_REQUEST['id'];
-      foreach($this->init->list('*','bc_turns',$filters) as $r) {
-        $result[$i]['index'] = "<b class='text-primary'>" . $i+1 . "</b>";
-        $result[$i]['start'] = "<input class='inputTurn' data-id='$r->id' data-field='start' type='datetime-local' onfocus='this.showPicker()' value='$r->start' required>";
-        $result[$i]['end'] = "<input class='inputTurn' data-id='$r->id' data-field='end' type='datetime-local' onfocus='this.showPicker()' value='$r->end' required>";
-        $result[$i]['action'] = "<button class='btn btn-danger deleteTurn' data-id='$r->id'><i class='fas fas fa-trash'></i></button>";
-        $i++;
-      }
-      echo json_encode($result);
+      $filters = "and id = " . $_REQUEST['id'];
+      echo $this->init->get('turns','bc',$filters)->turns;
     } else {
       $this->init->redirect();
     }
   }
 
   public function ItemsData(){
+    header('Content-Type: application/json');
+    require_once "middlewares/check.php";
+    if (in_array(3, $permissions)) {
+      $result[] = array();
+      $i=0;
+      $filters = "and id = " . $_REQUEST['id'];
+      echo $this->init->get('data','bc',$filters)->data;
+    } else {
+      $this->init->redirect();
+    }
+  }
+
+  public function ItemsDatab(){
     header('Content-Type: application/json');
     require_once "middlewares/check.php";
     if (in_array(3, $permissions)) {
