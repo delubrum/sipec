@@ -92,13 +92,13 @@
     foreach($this->init->list('*','rm_items',$filters) as $r) {
     ?>
     </tr>
-      <td><?php echo "<b>" . $i+1 . "</b>" ?></td>
+      <td><?php echo "<b>" . ($i+1) . "</b>" ?></td>
       <td><?php $kg += $r->kg; echo $r->kg ?></td>
       <td><?php $kg_client += $r->kg_client; echo $r->kg_client ?></td>
       <td><?php $tara += $r->tara; echo $r->tara ?></td>
       <td><?php $tara_client += $r->tara_client; echo $r->tara_client ?></td>
-      <td><?php $net += $r->kg - $r->tara; echo $r->kg - $r->tara ?></td>
-      <td><?php $net_client += $r->kg_client - $r->tara_client; echo $r->kg_client - $r->tara_client ?></td>
+      <td><?php $net += $r->kg - $r->tara; echo number_format($r->kg - $r->tara,2) ?></td>
+      <td><?php $net_client += $r->kg_client - $r->tara_client; echo number_format($r->kg_client - $r->tara_client,2) ?></td>
       <td><?php echo $r->status ?></td>
       <td><?php echo $r->spills ?></td>        
     </tr>
@@ -111,7 +111,6 @@
       <td><?php echo "<b>$tara_client</b>" ?></td>
       <td><?php echo "<b>$net</b>" ?></td>
       <td><?php echo "<b>$net_client</b>" ?></td>
-      <td></td>
       <td></td>
       <td></td>
     </tr>

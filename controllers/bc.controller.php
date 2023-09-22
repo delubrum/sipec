@@ -22,26 +22,36 @@ class BCController{
     }
   }
 
-  public function UpdateData(){
+  public function NewItem(){
     require_once "middlewares/check.php";
     if (in_array(3, $permissions)) {
-      $item = new stdClass();
-      $item->{$_REQUEST['field']} = json_encode($_REQUEST['data']);
-      $id = $this->init->update('bc',$item,$_REQUEST['id']);
-      // print_r($item);
+      $id = $_REQUEST['id'];
+      require_once 'views/rm/new-item.php';
     } else {
       $this->init->redirect();
     }
   }
 
-  public function TurnsData(){
-    header('Content-Type: application/json');
+  public function SaveItem(){
     require_once "middlewares/check.php";
     if (in_array(3, $permissions)) {
-      $result[] = array();
-      $i=0;
-      $filters = "and id = " . $_REQUEST['id'];
-      echo $this->init->get('turns','bc',$filters)->turns;
+      $item = new stdClass();
+      $rm = new stdClass();
+      foreach($_POST as $k => $val) {
+        if (!empty($val)) {
+          $item->{$k} = $val;
+        }
+      }
+      $item->userId = $_SESSION["id-SIPEC"];
+      $bcId = $_REQUEST['bcId'];
+      $rmId = $this->init->get("*","bc","and id = $bcId")->rmId;
+      if (empty($this->init->get("*","bc_items","and bcId = $bcId")->id)) {
+        $rm->start = date("Y-m-d H:i:s");
+        $rm->status = 'Iniciado';
+        $this->init->update('rm',$rm,$rmId);
+      }
+      $id = $this->init->save('bc_items',$item);
+      echo $id;
     } else {
       $this->init->redirect();
     }
@@ -53,41 +63,15 @@ class BCController{
     if (in_array(3, $permissions)) {
       $result[] = array();
       $i=0;
-      $filters = "and id = " . $_REQUEST['id'];
-      echo $this->init->get('data','bc',$filters)->data;
-    } else {
-      $this->init->redirect();
-    }
-  }
-
-  public function ItemsDatab(){
-    header('Content-Type: application/json');
-    require_once "middlewares/check.php";
-    if (in_array(3, $permissions)) {
-      $result[] = array();
-      $i=0;
       $filters = "and bcId = " . $_REQUEST['id'];
-      foreach($this->init->list('*','bc_items',$filters) as $r) {
-        $index = ($i == 0) ? 'Cabeza' : $i;
-        $net = ($i == 0) ? '' : "<input class='input' data-id='$r->id' data-field='net' type='number' step='0.01' min='0' value='$r->net' required>";
-        $drum = ($i == 0) ? '' : "<input class='input' data-id='$r->id' data-field='drum' type='number' step='1' min='0' value='$r->drum' required>";
-        $result[$i]['index'] = "<b class='text-primary'>" . $index . "</b>";
-        $result[$i]['date'] = "<input class='input' data-id='$r->id' data-field='date' type='date' onfocus='this.showPicker()' value='$r->date' required>";
-        $result[$i]['net'] = $net;
-        $result[$i]['drum'] = $drum;
-        $result[$i]['start'] = "<input class='input' data-id='$r->id' data-field='start' type='time' onfocus='this.showPicker()' value='$r->start' required>";
-        $result[$i]['end'] = "<input class='input' data-id='$r->id' data-field='end' type='time' onfocus='this.showPicker()' value='$r->end' required>";
-        $result[$i]['t0'] = "<input class='input' data-id='$r->id' data-field='t_0' type='number' step='0.01' min='0' value='$r->t_0' required>";
-        $result[$i]['t1'] = "<input class='input' data-id='$r->id' data-field='t_1' type='number' step='0.01' min='0' value='$r->t_1' required>";
-        $result[$i]['boilerTime'] = "<input class='input' data-id='$r->id' data-field='boiler_time' type='time' onfocus='this.showPicker()' value='$r->boiler_time' required>";
-        $result[$i]['boilerT'] = "<input class='input' data-id='$r->id' data-field='boiler_t' type='number' step='0.01' min='0' value='$r->boiler_t' required>";
-        $options = "<option value=''></option>";
-        foreach ($this->init->list("*","users"," and type = 'Operario' and status = 1") as $u) {  
-          $check = ($r->userId == $u->id) ? 'selected' : '';
-          $options .= "<option value='$u->id' $check> $u->username </option>";
-        }
-        $result[$i]['user'] = "<select class='input' data-id='$r->id' data-field='userId' required> $options </select>";
-        $result[$i]['action'] = "<button class='btn btn-danger delete' data-id='$r->id'><i class='fas fas fa-trash'></i></button>";
+      foreach($this->init->list('a.*,b.username','bc_items a',$filters,'LEFT JOIN users b on a.userId = b.id') as $r) {
+        $result[$i]['date'] = $r->createdAt;
+        $result[$i]['type'] = $r->type;
+        $result[$i]['net'] = $r->net;
+        $result[$i]['drum'] = $r->drum;
+        $result[$i]['temp'] = $r->temp;
+        $result[$i]['notes'] = $r->notes;
+        $result[$i]['user'] = $r->username;
         $i++;
       }
       echo json_encode($result);
@@ -96,93 +80,21 @@ class BCController{
     }
   }
 
-  public function SaveItem(){
-    require_once "middlewares/check.php";
-    if (in_array(3, $permissions)) {
-      $item = new stdClass();
-      $item->bcId = $_REQUEST['id'];
-      $id = $this->init->save('bc_items',$item);
-      echo $id;
-    } else {
-      $this->init->redirect();
-    }
-  }
-
-  public function SaveTurn(){
-    require_once "middlewares/check.php";
-    if (in_array(3, $permissions)) {
-      $item = new stdClass();
-      $item->bcId = $_REQUEST['id'];
-      $id = $this->init->save('bc_turns',$item);
-      echo $id;
-    } else {
-      $this->init->redirect();
-    }
-  }
-
-  public function DeleteItem(){
-    require_once "middlewares/check.php";
-    if (in_array(3, $permissions)) {
-      $item = new stdClass();
-      $filters = "id = " . $_REQUEST['id'];
-      $this->init->delete('bc_items',$filters);
-    } else {
-      $this->init->redirect();
-    }
-  }
-
-  public function DeleteTurn(){
-    require_once "middlewares/check.php";
-    if (in_array(3, $permissions)) {
-      $item = new stdClass();
-      $filters = "id = " . $_REQUEST['id'];
-      $this->init->delete('bc_turns',$filters);
-    } else {
-      $this->init->redirect();
-    }
-  }
-
-  public function UpdateItem(){
-    require_once "middlewares/check.php";
-    if (in_array(3, $permissions)) {
-      $item = new stdClass();
-      $id = $_REQUEST['id'];
-      $item->{$_REQUEST['field']} = $_REQUEST['value'];
-      $this->init->update('bc_items',$item,$id);
-      print_r($item);
-    } else {
-      $this->init->redirect();
-    }
-  }
-
-  public function UpdateTurn(){
-    require_once "middlewares/check.php";
-    if (in_array(3, $permissions)) {
-      $item = new stdClass();
-      $id = $_REQUEST['id'];
-      $item->{$_REQUEST['field']} = $_REQUEST['value'];
-      $this->init->update('bc_turns',$item,$id);
-      print_r($item);
-    } else {
-      $this->init->redirect();
-    }
-  }
-
   public function Update(){
     require_once "middlewares/check.php";
     if (in_array(3, $permissions)) {
-      $item = new stdClass();
-      $itemb = new stdClass();
       if (isset($_REQUEST['field'])) {
+        $item = new stdClass();
         $item->{$_REQUEST['field']} = $_REQUEST['value'];
+        $this->init->update('bc',$item,$_REQUEST['id']);
       } else {
-        $item->closedAt = date("Y-m-d H:i:s");
+        $itemb = new stdClass();
         $itemb->bcAt = date("Y-m-d H:i:s");
+        $itemb->status = 'Facturación';
         $bcId = $_REQUEST['id'];
         $rmId = $this->init->get("*","bc"," and id = $bcId")->rmId;
         $this->init->update('rm',$itemb,$rmId);
       }
-      $this->init->update('bc',$item,$_REQUEST['id']);
     } else {
       $this->init->redirect();
     }
@@ -198,6 +110,17 @@ class BCController{
       $qty = $net - $id->paste;
       $status = "Bitacora";
       require_once 'views/reports/bc.php';
+    } else {
+      $this->init->redirect();
+    }
+  }
+
+  public function IV(){
+    require_once "middlewares/check.php";
+    if (in_array(3, $permissions)) {
+      $id = $_REQUEST['id'];
+      $status = $_REQUEST['status'];
+      require_once 'views/rm/iv.php';
     } else {
       $this->init->redirect();
     }

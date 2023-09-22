@@ -33,9 +33,6 @@
     <script src="assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script src="assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="assets/plugins/toastr/toastr.min.js"></script>
-    <script>
-        setInterval(function(){$.post('?c=Init&a=SessionRefresh');},600000); //refreshes the session every 10 minutes
-    </script>
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse text-sm layout-fixed layout-navbar-fixed">
@@ -160,7 +157,13 @@
             </div>
             <!-- /.sidebar -->
         </aside>
-
         <!-- Content Wrapper. Contains page content -->
-
         <div class="content-wrapper" style="background-image: url('assets/img/plants.png');background-repeat: no-repeat;background-size:700px;">
+
+        <script>
+            setInterval(function(){$.post('?c=Init&a=SessionRefresh');},600000); //refreshes the session every 10 minutes
+            $("#loading").show();
+            document.addEventListener("DOMContentLoaded", function() {
+                $("#loading").hide();
+            });
+        </script>

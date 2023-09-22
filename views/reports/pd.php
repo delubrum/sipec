@@ -200,7 +200,7 @@
       foreach($this->init->list('*','rm_items',$filters) as $r) {
       ?>
       </tr>
-        <td><?php echo "<b>" . $i+1 . "</b>" ?></td>
+        <td><?php echo "<b>" . ($i+1) . "</b>" ?></td>
         <td><?php $kg += $r->kg; echo $r->kg ?></td>
         <td><?php $kg_client += $r->kg_client; echo $r->kg_client ?></td>
         <td><?php $tara += $r->tara; echo $r->tara ?></td>

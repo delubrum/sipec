@@ -111,61 +111,26 @@
         </div>
     </div>
 
-    <div class="row my-4">
-
-        <div class="col-12">
-        <b>NOTAS:</b> <?php echo $id->energy_1 ?>
-        </div>
-
-    </div>
-
-    <table class="tabla mb-4" style="width:100%">
-        <tr>
-            <th style="width:40px">Turno</th>
-            <th>Inicio</th>
-            <th>Fin</th>
-        </tr>
-        <?php  $i=0; foreach($this->init->list("*","bc_turns","and bcId = $id->id") as $r) { ?>
-        <tr>
-            <td><?php echo "<b>" . $i+1 . "</b>" ?></td>
-            <td><?php echo $r->start ?></td>
-            <td><?php echo $r->end ?></td>
-        </tr>
-        <?php $i++; } ?>
-    </table>   
-
     <table class="tabla" style="width:100%">
         <tr>
-            <th>Date</th>
-            <th style="width:40px">N°</th>
-            <th>Peso</th>
-            <th>Tambor</th>
-            <th>Hora Inicio</th>
-            <th>Hora Fin</th>
-            <th>T° Inicio</th>
-            <th>T° Fin</th>
-            <th>Hora Caldera</th>
-            <th>T° Caldera</th>
-            <th>Responsable</th>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Peso <br> Neto</th>
+            <th>Peso <br> Tambor</th>
+            <th>T°</th>
+            <th>Notas</th>
+            <th>Usuario</th>
         </tr>
         <?php  
         $i=0;
-        foreach($this->init->list("a.*, b.username","bc_items a","and bcId = $id->id", "LEFT JOIN users b on a.userId = b.id") as $r) {
-            $index = ($i == 0) ? 'Cabeza' : $i;
-            $net = ($i == 0) ? '' : $r->net;
-            $drum = ($i == 0) ? '' : $r->drum;
-        ?>
+        foreach($this->init->list("a.*, b.username","bc_items a","and bcId = $id->id", "LEFT JOIN users b on a.userId = b.id") as $r) { ?>
         <tr>
-            <td><?php echo $r->date ?></td>
-            <td><?php echo "<b>" . $index . "</b>" ?></td>
-            <td><?php echo $net ?></td>
-            <td><?php echo $drum ?></td>
-            <td><?php echo $r->start ?></td>
-            <td><?php echo $r->end ?></td>
-            <td><?php echo $r->t_0 ?></td>
-            <td><?php echo $r->t_1 ?></td>
-            <td><?php echo $r->boiler_time ?></td>
-            <td><?php echo $r->boiler_t ?></td>
+            <td><?php echo $r->createdAt ?></td>
+            <td><?php echo $r->type ?></td>
+            <td><?php echo $r->net ?></td>
+            <td><?php echo $r->drum ?></td>
+            <td><?php echo $r->temp ?></td>
+            <td><?php echo $r->notes ?></td>
             <td><?php echo $r->username ?></td>
         </tr>
         <?php $i++; } ?>

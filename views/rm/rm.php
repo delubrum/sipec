@@ -4,7 +4,7 @@
   <input type="hidden" name="id" value="<?php echo $id->id ?>">
   <input type="hidden" name="status" value="<?php echo $status ?>">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-'hidden'="true">&times;</span>
+        <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">

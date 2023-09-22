@@ -47,17 +47,9 @@
             </dl>
         </div>
 
-    </div>
-
-    <center>
-    <div id="spreadsheet"></div>
-
-    <div id="spreadsheet2"></div>
-
-    <div class="row mt-4">
         <div class="col-sm-4">
             <div class="form-group">
-                <label>* Type:</label>
+                <label>* Tipo:</label>
                 <div class="input-group">
                 <select class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="type" required>
                         <option value=''></option>
@@ -159,16 +151,26 @@
             </div>
         </div>
 
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label>Notas:</label>
-                <div class="input-group">
-                <textarea style="width:100%" class="form-control form-control-sm inputBC" data-id="<?php echo $id->id ?>" data-field="notes"><?php echo (isset($id)) ? $id->notes : ''; ?></textarea>
-                </div>
-            </div>
-        </div>
+    </div>
 
-
+    <div class="table-responsive p-0 mt-3" style="width:100%">
+			<table id="items" class="table-excel">
+					<thead>
+					<tr>
+							<th>Fecha</th>
+							<th>Tipo</th>
+							<th>Peso <br> Neto</th>
+							<th>Peso <br> Tambor</th>
+							<th>T°</th>
+							<th>Notas</th>
+							<th style='width:20px !important'>
+							<?php if ($status == 'Producción' || $status == 'Iniciado') { ?>
+							<button class='btn btn-primary add' data-id='<?php echo $id->id ?>'><i class="fas fa-plus"></i></button>
+							<?php } ?>
+							</th>
+					</tr>
+					</thead>
+			</table>    
     </div>
 
   </div>
@@ -182,317 +184,63 @@
 
 <script>
 
-var customColumn = {
-    // Methods
-    closeEditor : function(cell, save) {
-        var value = cell.children[0].value;
-        cell.innerHTML = value;
-        return value;
-    },
-    openEditor : function(cell) {
-        // Create input
-        var element = document.createElement('input');
-        element.type = "datetime-local";
-        element.value = cell.innerHTML;
-        cell.innerHTML = '';
-        cell.appendChild(element);
-        element.focus();
-    },
-    getValue : function(cell) {
-        return cell.innerHTML;
-    },
-    setValue : function(cell, value) {
-        cell.innerHTML = value;
-    }
-}
-
-var save = function(instance, cell, x, y, value) {
-    data = table.getData();
-    id = <?php echo $id->id ?>;
-    field = 'turns';
-    $("#loading").show();
-    $.post("?c=BC&a=UpdateData",{id,data,field}).done(function(data){
-        $("#loading").hide();
-        table.refresh();
-    });
-}
-
-var save2 = function(instance, cell, x, y, value) {
-    data = table2.getData();
-    id = <?php echo $id->id ?>;
-    field = 'data';
-    $("#loading").show();
-    $.post("?c=BC&a=UpdateData",{id,data,field}).done(function(data){
-        $("#loading").hide();
-        table.refresh();
-    });
-}
-
-var table = jspreadsheet(document.getElementById('spreadsheet'), {
-    "url":"?c=BC&a=TurnsData&id=<?php echo $id->id ?>",
-    minDimensions:[2,1],
-    autoIncrement: false,
-    allowInsertColumn: false, // Allow ly inserting columns
-    allowDeleteColumn: false, // Allow ly deleting columns
-    allowRenameColumn: false, // Allow ly deleting columns
-    columnDrag:true,
-    allowExport: false,
-    parseFormulas: true,
-    onafterchanges: save,
-    columns: [
-      { 
-        title:'date',
-        type:'calendar',
-        width:100,
-      },
-      { 
-        title:'Net',
-        type:'text',
-        width:200,
-      },
-    ],
-    text:{
-        insertANewRowBefore:'Insertar fila antes',
-        insertANewRowAfter:'Insertar fila despues',
-        deleteSelectedRows:'Borrar filas',
-        copy:'Copiar',
-        paste:'Pegar',
-        about: '',
-        areYouSureToDeleteTheSelectedRows:'Desea borrar las filas seleccionadas?',
-    }
-});
-
-var save = function(instance, cell, x, y, value) {
-    data = table.getData();
-    id = <?php echo $id->id ?>;
-    $("#loading").show();
-    $.post("?c=RM&a=UpdateData",{id,data}).done(function(data){
-        $("#loading").hide();
-        table.refresh();
-    });
-}
-
-var SUMCOL = function(instance, columnId) {
-    var total = 0;
-    for (var j = 0; j < instance.options.data.length; j++) {
-        if (Number(instance.records[j][columnId].innerHTML)) {
-            total += Number(instance.records[j][columnId].innerHTML);
-        }
-    }
-    return total.toFixed(2);
-}
-
-var table2 = jspreadsheet(document.getElementById('spreadsheet2'), {
-    url: "?c=BC&a=ItemsData&id=<?php echo $id->id ?>",
-    minDimensions:[10,1],
-    autoIncrement: false,
-    allowInsertColumn: false, // Allow ly inserting columns
-    allowDeleteColumn: false, // Allow ly deleting columns
-    allowRenameColumn: false, // Allow ly deleting columns
-    columnDrag:true,
-    allowExport: false,
-    parseFormulas: true,
-    onafterchanges: save,
-    <?php if($status != 'Registrando') { ?>
-        footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)','=SUMCOL(TABLE(), 2)','=SUMCOL(TABLE(), 3)','=SUMCOL(TABLE(), 4)','=SUMCOL(TABLE(), 5)']],
-    <?php } else { ?>
-        footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)']],
-    <?php } ?>
-
-    columns: [
-      { 
-        title:'Peso',
-        type:'numeric',
-        width:70,
-        <?php if($status != 'Registrando') { ?>
-        readOnly: true,
-        <?php } ?> 
-      },
-      { 
-        title:'Peso Cliente',
-        type:'numeric',
-        width:100,
-      },
-      { 
-        title:'Taras',
-        type:'numeric',
-        width:100,
-        <?php if($status == 'Registrando') { ?>
-        readOnly: true,
-        type:'hidden',
-        <?php } ?> 
-      },
-      { 
-        title:'Taras Cliente',
-        type:'numeric',
-        width:100,
-        <?php if($status == 'Registrando') { ?>
-        readOnly: true,
-        type:'hidden',
-        <?php } ?> 
-      },
-      { 
-        title:'Neto',
-        width:70,
-        type:'numeric',
-        readOnly: true,
-        <?php if($status == 'Registrando') { ?>
-        type:'hidden',
-        <?php } ?> 
-      },
-      { 
-        title:'Neto cliente',
-        type:'numeric',
-        width:100,
-        readOnly: true,
-        <?php if($status == 'Registrando') { ?>
-        type:'hidden',
-        <?php } ?> 
-      },
-      {
-        type: 'dropdown',
-        title:'Estado',
-        width:100,
-        source:[
-          "Bueno",
-          "Malo",
-        ],
-        validate: 'required',
-        <?php if($status != 'Registrando') { ?>
-        readOnly: true,
-        <?php } ?> 
-      },
-      { 
-        title:'Derrames Vehículo',
-        type: 'checkbox',
-        width:150,
-        <?php if($status != 'Registrando') { ?>
-        readOnly: true,
-        <?php } ?> 
-      },
-      { 
-        title:'Derrames Caneca',
-        type: 'checkbox',
-        width:150,
-        <?php if($status != 'Registrando') { ?>
-        readOnly: true,
-        <?php } ?> 
-      },
-      { 
-        title:'Derrames Planta',
-        type: 'checkbox',
-        width:150,
-        <?php if($status == 'Registrando') { ?>
-        readOnly: true,
-        type:'hidden',
-        <?php } ?> 
-      },
-    ],
-    updateTable:function(instance, cell, col, row, val, label, cellName) {
-        paste = $('#paste').val();
-        total = SUMCOL(table, 4);
-        $('#total').html(total-paste);
-        if (col == 4) {
-            cell.innerHTML = (table.getValue('A'+row)-(table.getValue('C'+row))).toFixed(2);
-        }
-        if (col == 5) {
-            cell.innerHTML = (table.getValue('B'+row)-(table.getValue('D'+row))).toFixed(2);
-        }
-    },
-    text:{
-        insertANewRowBefore:'Insertar fila antes',
-        insertANewRowAfter:'Insertar fila despues',
-        deleteSelectedRows:'Borrar filas',
-        copy:'Copiar',
-        paste:'Pegar',
-        about: '',
-        areYouSureToDeleteTheSelectedRows:'Desea borrar las filas seleccionadas?',
-    }
-});
-
-
-
-
-        
-
-
-
 $(document).on("click", ".add", function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
     id = $(this).data('id');
     $("#loading").show();
-    $.post("?c=BC&a=SaveItem",{id}).done(function(data){
+    $.post("?c=BC&a=NewItem",{id}).done(function(data){
         $("#loading").hide();
-        table.ajax.reload( null, false );
-        // setTimeout( function () {
-        //     $('.kg:last').focus();
-        //     $('.kg:last').val('');
-        // }, 100 );
-    });
+		$('#xsModal').modal('toggle');
+		$('#xsModal .modal-content').html(data);
+	});
 });
 
-$(document).on("click", ".addTurn", function(e) {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    id = $(this).data('id');
-    $("#loading").show();
-    $.post("?c=BC&a=SaveTurn",{id}).done(function(data){
-        $("#loading").hide();
-        tableb.ajax.reload( null, false );
-        // setTimeout( function () {
-        //     $('.kg:last').focus();
-        //     $('.kg:last').val('');
-        // }, 100 );
-    });
-});
 
-$(document).on('click','.delete', function(e) {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    id = $(this).data("id");
-    e.preventDefault();
-    Swal.fire({
-        title: 'Desea eliminar el item?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si',
-        cancelButtonText: 'No'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $("#loading").show();
-            $.post("?c=BC&a=DeleteItem",{id}).done(function(data){
-                $("#loading").hide();
-                table.ajax.reload( null, false );
-            });
-        }
-    })
+$(document).ready(function() {
+table = $('#items').DataTable({
+    'order': [[1, 'asc']],
+    'lengthChange' : false,
+    'paginate': false,
+    'scrollX' : true,
+    'autoWidth' : false,
+    'ordering': false,
+    'searching': false,
+    'info':     false,
+    language : {
+        'zeroRecords': 'Agrega un item'          
+    },
+    'ajax': {
+        'url':'?c=BC&a=ItemsData&id=<?php echo $id->id ?>',
+        'dataSrc': function (json) {
+            // Check if the data array is not empty or null
+            if (json != '') {
+                return json;
+            } else {
+                // Hide the table if there is no data
+                return []; // Return an empty array to prevent rendering
+            }
+        },
+    },
+    'columns': [
+        { data: 'date' },
+        { data: 'type' },
+        { data: 'net' },
+        { data: 'drum' },
+        { data: 'temp' },
+        { data: 'notes' },
+		{ data: 'user' },
+    ],
+		"columnDefs": [
+        { "width": "110px", "targets": 0 },
+        { "width": "60px", "targets": [1,2,3,4] },
+        { "width": "130px", "targets": 6 },
+    ]
 });
+setTimeout( function () {
+    table.draw();
+}, 200 );
 
-$(document).on('click','.deleteTurn', function(e) {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    id = $(this).data("id");
-    e.preventDefault();
-    Swal.fire({
-        title: 'Desea eliminar el item?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si',
-        cancelButtonText: 'No'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $("#loading").show();
-            $.post("?c=BC&a=DeleteTurn",{id}).done(function(data){
-                $("#loading").hide();
-                tableb.ajax.reload( null, false );
-            });
-        }
-    })
 });
 
 $(document).on("change", ".inputBC", function(e) {
@@ -504,32 +252,6 @@ $(document).on("change", ".inputBC", function(e) {
     $("#loading").show();
     $.post("?c=BC&a=Update",{id,field,value}).done(function(data){
         $("#loading").hide();
-    });
-});
-
-$(document).on("change", ".input", function(e) {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    id = $(this).data('id');
-    field = $(this).data('field');
-    value = $(this).val();
-    $("#loading").show();
-    $.post("?c=BC&a=UpdateItem",{id,field,value}).done(function(data){
-        $("#loading").hide();
-        table.ajax.reload( null, false );
-    });
-});
-
-$(document).on("change", ".inputTurn", function(e) {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    id = $(this).data('id');
-    field = $(this).data('field');
-    value = $(this).val();
-    $("#loading").show();
-    $.post("?c=BC&a=UpdateTurn",{id,field,value}).done(function(data){
-        $("#loading").hide();
-        tableb.ajax.reload( null, false );
     });
 });
 

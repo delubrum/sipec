@@ -9,6 +9,14 @@ class RMController{
 
   public function Index(){
     require_once "middlewares/check.php";
+    isset($_REQUEST['id']) ? $filters = '' : $filters = " and status <> 'Cerrado'";
+    (!empty($_REQUEST['id'])) ? $filters .= " and a.id =" . $_REQUEST['id']: $filters .= "";
+    (!empty($_REQUEST['userId'])) ? $filters .= " and a.userId ='" . $_REQUEST['userId']."'": $filters .= "";
+    (!empty($_REQUEST['priority'])) ? $filters .= " and a.priority ='" . $_REQUEST['priority']."'": $filters .= "";
+    (!empty($_REQUEST['from'])) ? $filters .= " and a.createdAt  >='" . $_REQUEST['from']."'": $filters .= "";
+    (!empty($_REQUEST['to'])) ? $filters .= " and a.createdAt <='" . $_REQUEST['to']." 23:59:59'": $filters .= "";
+    (!empty($_REQUEST['status'])) ? $filters .= " and a.status ='" . $_REQUEST['status'] . "'" : $filters .= "";
+
     if (in_array(3, $permissions)) {
       require_once 'views/layout/header.php';
       require_once 'views/rm/index.php';
@@ -55,25 +63,14 @@ class RMController{
         $result[$i]['date'] = $r->date;
         $result[$i]['client'] = $r->clientname;
         $result[$i]['product'] = $r->productname;
-        switch (true) {
-            case (!$r->enteredAt):
-              $status = 'Registrando';
-              break;
-            case ($r->enteredAt and !$r->closedAt):
-              $status = 'Pendiente';
-              break;
-            case ($r->closedAt and !$r->bcAt):
-              $status = 'Bitacora';
-              break;
-            case ($r->bcAt):
-              $status = 'Cerrado';
-              break;
+        $result[$i]['status'] = $r->status;
+        if ($r->status == 'Cerrado') {
+          $result[$i]['invoice'] = $r->invoice;
         }
-        $result[$i]['status'] = $status;
-        $button = ($status != 'Cerrado') ? "<button type='button' data-id='$r->id' data-status='$status' class='btn btn-primary float-right mx-1 action'> <i class='fas fa-pen'></i></button>" : "";
-        $rm = ($status != 'Pendiente' and $status != 'Registrando') ? "<a href='?c=RM&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-primary float-right mx-1'>RM</a>" : "";
-        $bc = ($status == 'Cerrado') ? "<a href='?c=BC&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-primary float-right mx-1'>BC</a>" : "";
-        $pd = ($status == 'Cerrado') ? "<a href='?c=RM&a=PD&id=$r->id' type='button' target='_blank' class='btn btn-primary float-right mx-1'>PD</a>" : "";
+        $button = ($r->status != 'Cerrado') ? "<button type='button' data-id='$r->id' data-status='$r->status' class='btn btn-primary float-right mx-1 action'> <i class='fas fa-pen'></i></button>" : "";
+        $rm = ($r->status != 'Pendiente' and $r->status != 'Registrando') ? "<a href='?c=RM&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-primary float-right mx-1'>RM</a>" : "";
+        $bc = ($r->status == 'Facturación' || $r->status == 'Cerrado') ? "<a href='?c=BC&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-primary float-right mx-1'>BC</a>" : "";
+        $pd = ($r->status == 'Facturación' || $r->status == 'Cerrado') ? "<a href='?c=RM&a=PD&id=$r->id' type='button' target='_blank' class='btn btn-primary float-right mx-1'>PD</a>" : "";
 
         $result[$i]['action'] = "$button $rm $bc $pd";
         $i++;
@@ -93,7 +90,9 @@ class RMController{
           $item->{$k} = $val;
         }
       }
+      $item->userId = $_SESSION["id-SIPEC"];
       $item->data = '[]';
+      $item->status = 'Registrando';
       $id = $this->init->save('rm',$item);
       echo json_encode(array("id" => $id, "status" => "Registrando"));
     } else {
@@ -144,7 +143,15 @@ class RMController{
     if (in_array(3, $permissions)) {
       $item = new stdClass();
       if (isset($_REQUEST['status']) and $_REQUEST['status'] == 'Registrando') {
+        $item->status = 'Pendiente';
         $item->enteredAt = date("Y-m-d H:i:s");
+        $this->init->update('rm',$item,$_REQUEST['id']);
+      }
+      if (isset($_REQUEST['status']) and $_REQUEST['status'] == 'Facturación') {
+        $item->status = 'Cerrado';
+        $item->invoice = $_REQUEST['invoice'];
+        $item->invoiceAt = date("Y-m-d H:i:s");
+        $this->init->update('rm',$item,$_REQUEST['id']);
       }
       if (isset($_REQUEST['field'])) {
         $item->{$_REQUEST['field']} = $_REQUEST['value'];
@@ -152,13 +159,13 @@ class RMController{
         echo $this->init->get('SUM(kg-tara) as total','rm_items',$filters)->total;
       }
       if (isset($_REQUEST['status']) and $_REQUEST['status'] == 'Pendiente') {
-        $item->closedAt = date("Y-m-d H:i:s");
+        $item->rmAt = date("Y-m-d H:i:s");
         $itemb = new stdClass();
         $itemb->rmId = $_REQUEST['id'];
-        $itemb->turns = '[]';
-        $itemb->data = '[]';
         $items = new stdClass();
         $this->init->save('bc',$itemb);
+        $item->status = 'Producción';
+        $this->init->update('rm',$item,$_REQUEST['id']);
         $id = $_REQUEST['id'];
         foreach(json_decode($this->init->get("data","rm","and id = $id")->data) as $r) {
           $items->rmId = $id;
@@ -174,7 +181,6 @@ class RMController{
           $this->init->save('rm_items',$items);
         }
       }
-      $this->init->update('rm',$item,$_REQUEST['id']);
     } else {
       $this->init->redirect();
     }

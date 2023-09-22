@@ -40,7 +40,9 @@
 <script>
 $(document).on("click", ".new", function() {
     id = $(this).data('id');
+    $("#loading").show();
     $.post( "?c=Products&a=New", {id}).done(function( data ) {
+        $("#loading").hide();
         $('#xsModal').modal('toggle');
         $('#xsModal .modal-content').html(data);
     });

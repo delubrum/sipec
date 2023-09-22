@@ -7,9 +7,6 @@
 	<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
 	<script src="https://jsuites.net/v4/jsuites.js"></script>
 	<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
-
-	<link rel="stylesheet" type="text/css" href="http://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.css" />
-	<script src="http://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.js"></script>
 </header>
 
 <!-- Content Header (Page header) -->
@@ -66,12 +63,12 @@
 											<div class="form-group">
 													<label>Producto:</label>
 													<div class="input-group">
-													<select class="form-control" name="priority">
-															<option value=''></option>
-															<option <?php echo (!empty($_REQUEST['priority']) and 'Low' == $_REQUEST['priority']) ? 'selected' : ''; ?> value='Low'>Low</option>
-															<option <?php echo (!empty($_REQUEST['priority']) and 'Medium' == $_REQUEST['priority']) ? 'selected' : ''; ?> value='Medium'>Medium</option>
-															<option <?php echo (!empty($_REQUEST['priority']) and 'High' == $_REQUEST['priority']) ? 'selected' : ''; ?> value='High'>High</option>
-													</select>
+													<select class="form-control select2" name="productId" style="width: 100%;" required>
+																<option value=''></option>
+																<?php foreach ($this->init->list("*","products"," and status = 1") as $r) { ?>     
+																		<option value='<?php echo $r->id?>'><?php echo $r->name?></option>
+																<?php } ?>
+														</select>
 													</div>
 											</div>
 									</div>
@@ -81,10 +78,12 @@
 													<div class="input-group">
 															<select class="form-control" name="status">
 															<option></option>
-															<option <?php echo (!empty($_REQUEST['status']) and 'Not Started' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Not Started">Not Started</option>
-															<option <?php echo (!empty($_REQUEST['status']) and 'In Progress' == $_REQUEST['status']) ? 'selected' : ''; ?> value="In Progress">In Progress</option>
-															<option <?php echo (!empty($_REQUEST['status']) and 'Late' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Late">Late</option>
-															<option <?php echo (!empty($_REQUEST['status']) and 'Complete' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Complete">Complete</option>
+															<option <?php echo (!empty($_REQUEST['status']) and 'Registrando' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Registrando">Registrando</option>
+															<option <?php echo (!empty($_REQUEST['status']) and 'Pendiente' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Pendiente">Pendiente</option>
+															<option <?php echo (!empty($_REQUEST['status']) and 'Producción' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Producción">Producción</option>
+															<option <?php echo (!empty($_REQUEST['status']) and 'Iniciado' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Iniciado">Iniciado</option>
+															<option <?php echo (!empty($_REQUEST['status']) and 'Facturación' == $_REQUEST['status']) ? 'Facturación' : ''; ?> value="Facturación">Facturación</option>
+															<option <?php echo (!empty($_REQUEST['status']) and 'Cerrado' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Cerrado">Cerrado</option>
 															</select>
 													</div>
 											</div>
@@ -116,6 +115,9 @@
 								<th>Cliente</th>
 								<th>Producto</th>
 								<th>Estado</th>
+								<?php if (!empty($_REQUEST['status']) and 'Cerrado' == $_REQUEST['status']) { ?>
+								<th>Factura</th>
+								<?php } ?>
 								<th class="text-right">Acción</th>
 							</tr>
 						</thead>
@@ -128,7 +130,11 @@
 
 <script>
 $(document).on("click", ".new", function(e) {
+	e.stopImmediatePropagation();
+  e.preventDefault();
+	$("#loading").show();
 	$.post( "?c=RM&a=New").done(function( data ) {
+		$("#loading").hide();
 		$('#xsModal').modal('toggle');
 		$('#xsModal .modal-content').html(data);
 	});
@@ -137,16 +143,23 @@ $(document).on("click", ".new", function(e) {
 $(document).on("click", ".action", function() {
 	id = $(this).data('id');
 	status = $(this).data('status');
-	if (status == 'Bitacora') {
+	if (status == 'Producción' || status == 'Iniciado') {
 		url = "?c=BC&a=BC";
+	} else if (status == 'Facturación') {
+		url = "?c=BC&a=IV";
 	} else {
 		url = "?c=RM&a=RM";
 	}
 	$("#loading").show();
 	$.post(url , {id, status}).done(function(data){
 		$("#loading").hide();
-		$('#xlModal').modal('toggle');
-		$('#xlModal .modal-content').html(data);
+	  if (status == 'Facturación') {
+			$('#xsModal').modal('toggle');
+			$('#xsModal .modal-content').html(data);
+		} else {
+			$('#xlModal').modal('toggle');
+			$('#xlModal .modal-content').html(data);
+		}
 	});
 });
 
@@ -174,8 +187,14 @@ $(document).ready(function() {
 			{ data: 'client' },
 			{ data: 'product' },
 			{ data: 'status' },
+			<?php if (!empty($_REQUEST['status']) and 'Cerrado' == $_REQUEST['status']) { ?>
+				{ data: 'invoice' },
+			<?php } ?>
 			{ data: 'action' }
-		]
+		],
+		"columnDefs": [
+        { "width": "200px", "targets": 5 },
+    ]
 	});
 });
 </script>

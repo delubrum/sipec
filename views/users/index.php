@@ -44,7 +44,9 @@
 
 <script>
 $(document).on("click", ".new", function() {
+    $("#loading").show();
     $.post( "?c=Users&a=New").done(function( data ) {
+        $("#loading").hide();
         $('#lgModal').modal('toggle');
         $('#lgModal .modal-content').html(data);
     });
