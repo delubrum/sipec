@@ -9,7 +9,7 @@
         <div class="row mb-2">
             <div class="col-sm-12">
                 <button type="button" class="btn btn-primary float-right new btn-lg">
-                    <i class="fas fa-plus"></i>
+                    <i class="fas fa-plus"></i> Adicionar
                 </button>
                 <h2 class="m-0 text-dark">Productos</h2>
                 

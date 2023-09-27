@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12">
-                <h2 class="m-0 text-dark">Certificados</h2>
+                <h2 class="m-0 text-dark">Paquetes de Despacho</h2>
             </div>
         </div>
     </div>
@@ -22,6 +22,7 @@
 						<thead>
 							<tr>
 								<th>Fecha</th>
+								<th>Producto</th>
 								<th class="text-right">Acción</th>
 							</tr>
 						</thead>
@@ -42,7 +43,7 @@ $(document).ready(function() {
 		'scrollX' : true,
 		'autoWidth' : false,
 		'ajax': {
-			'url':'?c=Certificate&a=Data',
+			'url':'?c=Certificate&a=PDData',
 			'dataSrc': function (json) {
 				// Check if the data array is not empty or null
 				if (json != '') {
@@ -54,6 +55,7 @@ $(document).ready(function() {
 		},
 		'columns': [
 			{ data: 'date' },
+			{ data: 'product' },
 			{ data: 'action' }
 		]
 	});

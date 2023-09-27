@@ -60,7 +60,7 @@
 $(document).on('click','.permission', function() {
 	const userId = '<?php echo $id->id ?>';
 	const id = String($(this).data('id')); // Convierte a cadena
-	if (id != '1') {
+	// if (id != '1') {
 		$(this).toggleClass('btn-primary btn-secondary');
 		const elements = document.querySelectorAll('.permission.btn-primary');
 		const arr = Array.from(elements, item => item.getAttribute('data-id'));
@@ -69,7 +69,7 @@ $(document).on('click','.permission', function() {
 		$.post('?c=Users&a=SavePermissions', {userId, permissions}, function (data) {
 			location.reload();
 		});
-	}
+	// }
 });
 </script>
 <?php } ?>

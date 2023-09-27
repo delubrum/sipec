@@ -1,4 +1,4 @@
-<form method="post" id="form">
+<form method="post" id="formIV">
   <div class="modal-header">
   <h5 class="modal-title">Factura</b></h5>
   <input type="hidden" name="id" value="<?php echo $id ?>">
@@ -27,12 +27,12 @@
 
 
 <script>
-$(document).on('submit', '#form', function(e) {
+$(document).on('submit', '#formIV', function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
-    if (document.getElementById("form").checkValidity()) {
+    if (document.getElementById("formIV").checkValidity()) {
         $("#loading").show();
-        $.post( "?c=RM&a=Update", $( "#form" ).serialize()).done(function(res) {
+        $.post( "?c=RM&a=Update", $( "#formIV" ).serialize()).done(function(res) {
             if (isNaN(res)) {
                 toastr.error(res);
                 $("#loading").hide();

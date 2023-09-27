@@ -1,4 +1,4 @@
-<form method="post" id="form">
+<form method="post" id="formBC">
   <div class="modal-header">
   <h5 class="modal-title">Bitacora</b></h5>
   <input type="hidden" name="id" value="<?php echo $id->id ?>">
@@ -165,7 +165,7 @@
 							<th>Notas</th>
 							<th style='width:20px !important'>
 							<?php if ($status == 'Producción' || $status == 'Iniciado') { ?>
-							<button class='btn btn-primary add' data-id='<?php echo $id->id ?>'><i class="fas fa-plus"></i></button>
+							<button class='btn btn-primary add' data-id='<?php echo $id->id ?>'><i class="fas fa-plus"></i> Adicionar</button>
 							<?php } ?>
 							</th>
 					</tr>
@@ -255,12 +255,12 @@ $(document).on("change", ".inputBC", function(e) {
     });
 });
 
-$(document).on('submit', '#form', function(e) {
+$(document).on('submit', '#formBC', function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
-    if (document.getElementById("form").checkValidity()) {
+    if (document.getElementById("formBC").checkValidity()) {
         $("#loading").show();
-        $.post( "?c=BC&a=Update", $( "#form" ).serialize()).done(function(res) {
+        $.post( "?c=BC&a=Update", $( "#formBC" ).serialize()).done(function(res) {
             if (isNaN(res)) {
                 toastr.error(res);
                 $("#loading").hide();

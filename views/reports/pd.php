@@ -3,12 +3,7 @@
 <head>
   <title>SIPEC | Paquete de Despacho</title>
   <link rel="icon" sizes="192x192" href="assets/img/logo.png">
-  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-  <script src="https://adminlte.io/tdemes/v3/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="https://adminlte.io/tdemes/v3/dist/js/adminlte.min.js"></script>
   <link rel="stylesheet" href="assets/css/adminlte.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
-  <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
   <style>
     .tabla th, .tabla td {
@@ -253,3 +248,4 @@
 
 </body>
 </html>
+

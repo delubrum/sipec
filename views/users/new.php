@@ -61,7 +61,7 @@
                 <input type="hidden" name="lang" value="es">
                 <div class="row mb-3">
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Nueva Contraseña</h6>
+                        <h6 class="mb-0">Contraseña (Alfanumérica, 4 caracteres mínimo)</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
                         <input type="password" minlength="4" id="newpass" name="newpass" class="form-control" required>

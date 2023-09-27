@@ -1,8 +1,8 @@
-<form method="post" id="form">
+<form method="post" id="formRM">
   <div class="modal-header">
   <h5 class="modal-title">Recibo de Materiales</h5>
   <input type="hidden" name="id" value="<?php echo $id->id ?>">
-  <input type="hidden" name="status" value="<?php echo $status ?>">
+  <input type="hidden" name="status" id="status" value="<?php echo $status ?>">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -163,7 +163,7 @@ var SUMCOL = function(instance, columnId) {
     return total.toFixed(2);
 }
 
-var table = jspreadsheet(document.getElementById('spreadsheet'), {
+    table = jspreadsheet(document.getElementById('spreadsheet'), {
     url: "?c=RM&a=ItemsData&id=<?php echo $id->id ?>&status=<?php echo $status ?>",
     minDimensions:[10,1],
     autoIncrement: false,
@@ -175,6 +175,8 @@ var table = jspreadsheet(document.getElementById('spreadsheet'), {
     parseFormulas: true,
     onafterchanges: save,
     <?php if($status != 'Registrando') { ?>
+        allowInsertRow: false, // Allow ly inserting columns
+        allowDeleteRow: false, // Allow ly inserting columns
         footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)','=SUMCOL(TABLE(), 2)','=SUMCOL(TABLE(), 3)','=SUMCOL(TABLE(), 4)','=SUMCOL(TABLE(), 5)']],
     <?php } else { ?>
         footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)']],
@@ -182,15 +184,15 @@ var table = jspreadsheet(document.getElementById('spreadsheet'), {
 
     columns: [
       { 
-        title:'Peso',
+        title:'PESO BRUTO',
         type:'numeric',
-        width:70,
+        width:100,
         <?php if($status != 'Registrando') { ?>
         readOnly: true,
         <?php } ?> 
       },
       { 
-        title:'Peso Cliente',
+        title:'PESO BRUTO \n CLIENTE',
         type:'numeric',
         width:100,
       },
@@ -214,7 +216,7 @@ var table = jspreadsheet(document.getElementById('spreadsheet'), {
       },
       { 
         title:'Neto',
-        width:70,
+        width:100,
         type:'numeric',
         readOnly: true,
         <?php if($status == 'Registrando') { ?>
@@ -232,7 +234,7 @@ var table = jspreadsheet(document.getElementById('spreadsheet'), {
       },
       {
         type: 'dropdown',
-        title:'Estado',
+        title:'ESTADO DEL \n TAMBOR',
         width:100,
         source:[
           "Bueno",
@@ -244,25 +246,25 @@ var table = jspreadsheet(document.getElementById('spreadsheet'), {
         <?php } ?> 
       },
       { 
-        title:'Derrames Vehículo',
+        title:'DERRAMES \n VEHÍCULO',
         type: 'checkbox',
-        width:150,
+        width:100,
         <?php if($status != 'Registrando') { ?>
         readOnly: true,
         <?php } ?> 
       },
       { 
-        title:'Derrames Caneca',
+        title:'DERRAMES \n CANECA',
         type: 'checkbox',
-        width:150,
+        width:100,
         <?php if($status != 'Registrando') { ?>
         readOnly: true,
         <?php } ?> 
       },
       { 
-        title:'Derrames Planta',
+        title:'DERRAMES \n PLANTA',
         type: 'checkbox',
-        width:150,
+        width:100,
         <?php if($status == 'Registrando') { ?>
         readOnly: true,
         type:'hidden',
@@ -333,7 +335,7 @@ function hasEmptyFields(data) {
     });
 <?php } ?> 
 
-$(document).on('submit', '#form', function(e) {
+$(document).on('submit', '#formRM', function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
     if (hasEmptyFields(table.getColumnData(0))) {
@@ -344,25 +346,23 @@ $(document).on('submit', '#form', function(e) {
         toastr.error('Complete la columna Estado');
         return
     };
-
-
-    <?php if($status != 'Registrando') { ?> 
-    if (hasEmptyFields(table.getColumnData(1))) {
-        toastr.error('Complete la columna Peso Cliente');
-        return
-    };
-    if (hasEmptyFields(table.getColumnData(2))) {
-        toastr.error('Complete la columna Tara');
-        return
-    };
-    if (hasEmptyFields(table.getColumnData(3))) {
-        toastr.error('Complete la columna Tara Cliente');
-        return
-    };
-    <?php } ?> 
-    if (document.getElementById("form").checkValidity()) {
+    if($("#status").val() != 'Registrando') {
+        if (hasEmptyFields(table.getColumnData(1))) {
+            toastr.error('Complete la columna Peso Cliente');
+            return
+        };
+        if (hasEmptyFields(table.getColumnData(2))) {
+            toastr.error('Complete la columna Tara');
+            return
+        };
+        if (hasEmptyFields(table.getColumnData(3))) {
+            toastr.error('Complete la columna Tara Cliente');
+            return
+        };
+    } 
+    if (document.getElementById("formRM").checkValidity()) {
         $("#loading").show();
-        $.post( "?c=RM&a=Update", $( "#form" ).serialize()).done(function(res) {
+        $.post( "?c=RM&a=Update", $( "#formRM" ).serialize()).done(function(res) {
             if (isNaN(res)) {
                 toastr.error(res);
                 $("#loading").hide();

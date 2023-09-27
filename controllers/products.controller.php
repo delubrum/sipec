@@ -39,9 +39,9 @@ class ProductsController{
       foreach($this->init->list('*','products') as $r) {
         $result[$i]['name'] = $r->name;
         $result[$i]['status'] = ($r->status != 1) ? 'Inactivo' : 'Activo';
-        $button = ($r->status != 1) ? "<span type='button' class='text-gray float-right status mx-1' data-id='$r->id' data-status='1'> <i class='fas fa-2x fa-toggle-off'></i></i></span>" : "<span type='button' class='text-black float-right status mx-1' data-id='$r->id' data-status='0'> <i class='fas fa-2x fa-toggle-on'></i></i></span>";
+        $button = ($r->status != 1) ? "<a type='button' class='btn btn-dark text-white float-right status mx-1' data-id='$r->id' data-status='1'> <i class='fas fa-toggle-off'> </i> Activar</a>" : "<a type='button' class='btn btn-danger float-right status mx-1' data-id='$r->id' data-status='0'> <i class='fas fa-toggle-on'></i> Desactivar</a>";
         $result[$i]['action'] = $button
-        . "<button class='btn btn-primary float-right mx-1 new' data-id='$r->id'> <i class='fas fa-pen'></i></button>"
+        . "<button class='btn btn-primary float-right mx-1 new' data-id='$r->id'> <i class='fas fa-pen'></i> Editar</button>"
         ;
         $i++;
       }

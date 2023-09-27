@@ -98,7 +98,7 @@
                 </li>
       
                 <li class="nav-item">
-                   <a href="?c=Login&a=Logout" class="dropdown-item float-rigt"><i class="fa fa-times"></i></a>
+                   <a href="?c=Login&a=Logout" class="dropdown-item float-right"><i class="fa fa-times"></i> Cerrar</a>
                 </li>
 
             </ul>

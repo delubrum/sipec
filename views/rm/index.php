@@ -15,7 +15,7 @@
         <div class="row mb-2">
             <div class="col-12">
 								<button type="button" class="btn btn-primary float-right new btn-lg">
-                  <i class="fas fa-plus"></i>
+                  <i class="fas fa-plus"></i> Adicionar
                 </button>
                 <h2 class="m-0 text-dark">Recibo de Material</h2>
             </div>
@@ -50,7 +50,7 @@
 										<div class="form-group">
 												<label>* Cliente:</label>
 												<div class="input-group">
-														<select class="form-control select2" name="clientId" id="client" style="width: 100%;" required>
+														<select class="form-control select2" name="clientId" id="client" style="width: 100%;">
 																<option value=''></option>
 																<?php foreach ($this->init->list("*","users"," and type = 'Cliente' and status = 1") as $r) { ?>     
 																		<option value='<?php echo $r->id?>'><?php echo $r->company?></option>
@@ -63,7 +63,7 @@
 											<div class="form-group">
 													<label>Producto:</label>
 													<div class="input-group">
-													<select class="form-control select2" name="productId" style="width: 100%;" required>
+													<select class="form-control select2" name="productId" style="width: 100%;">
 																<option value=''></option>
 																<?php foreach ($this->init->list("*","products"," and status = 1") as $r) { ?>     
 																		<option value='<?php echo $r->id?>'><?php echo $r->name?></option>
@@ -79,7 +79,7 @@
 															<select class="form-control" name="status">
 															<option></option>
 															<option <?php echo (!empty($_REQUEST['status']) and 'Registrando' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Registrando">Registrando</option>
-															<option <?php echo (!empty($_REQUEST['status']) and 'Pendiente' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Pendiente">Pendiente</option>
+															<option <?php echo (!empty($_REQUEST['status']) and 'Terminar R.M.' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Terminar R.M.">Terminar R.M.</option>
 															<option <?php echo (!empty($_REQUEST['status']) and 'Producción' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Producción">Producción</option>
 															<option <?php echo (!empty($_REQUEST['status']) and 'Iniciado' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Iniciado">Iniciado</option>
 															<option <?php echo (!empty($_REQUEST['status']) and 'Facturación' == $_REQUEST['status']) ? 'Facturación' : ''; ?> value="Facturación">Facturación</option>
@@ -112,6 +112,7 @@
 							<tr>
 								<th>RM</th>
 								<th>Fecha</th>
+								<th>Creado Por</th>
 								<th>Cliente</th>
 								<th>Producto</th>
 								<th>Estado</th>
@@ -135,8 +136,8 @@ $(document).on("click", ".new", function(e) {
 	$("#loading").show();
 	$.post( "?c=RM&a=New").done(function( data ) {
 		$("#loading").hide();
-		$('#xsModal').modal('toggle');
-		$('#xsModal .modal-content').html(data);
+		$('#xlModal').modal('toggle');
+		$('#xlModal .modal-content').html(data);
 	});
 });
 
@@ -164,7 +165,7 @@ $(document).on("click", ".action", function() {
 });
 
 $(document).ready(function() {
-	var table = $('#list').DataTable({
+list = $('#list').DataTable({
 		'order': [[1, 'desc']],
 		'lengthChange' : false,
 		'paginate': false,
@@ -184,6 +185,7 @@ $(document).ready(function() {
 		'columns': [
 			{ data: 'id' },
 			{ data: 'date' },
+			{ data: 'user' },
 			{ data: 'client' },
 			{ data: 'product' },
 			{ data: 'status' },
@@ -193,7 +195,9 @@ $(document).ready(function() {
 			{ data: 'action' }
 		],
 		"columnDefs": [
-        { "width": "200px", "targets": 5 },
+        { "width": "200px", "targets": 6 },
+				{ className: 'dt-body-right', "targets": 6 },
+				
     ]
 	});
 });
