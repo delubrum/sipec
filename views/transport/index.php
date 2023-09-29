@@ -96,6 +96,7 @@
 								<th>Kg</th>
 								<th>Factura</th>
 								<th>Valor</th>
+								<th>Notas</th>
 							</tr>
 						</thead>
 					</table> 
@@ -147,6 +148,7 @@ list = $('#list').DataTable({
 			{ data: 'kg' },
 			{ data: 'invoice' },
 			{ data: 'price' },
+			{ data: 'notes' },
 		],
 	});
 });

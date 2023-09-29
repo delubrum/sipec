@@ -62,7 +62,7 @@
                 <div class="form-group">
                     <label>* Kg:</label>
                     <div class="input-group">
-                        <input type="number" step="0.01" min="0.01" class="form-control" name="kg" required>
+                        <input data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '', 'placeholder': '0'" class="form-control" name="kg" required>
                     </div>
                 </div>
             </div>
@@ -80,7 +80,17 @@
                 <div class="form-group">
                     <label>* Valor:</label>
                     <div class="input-group">
-                    <input id="price" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 0, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" class="form-control" name="price" placeholder="$ 0" required>
+                        <input data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 0, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" class="form-control" name="price" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label>* Notas:</label>
+                    <div class="input-group">
+                        <textarea class="form-control" name="notes" style="width:100%"></textarea>
+                    </div>
                 </div>
             </div>
 

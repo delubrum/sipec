@@ -8,36 +8,21 @@
     </button>
   </div>
   <div class="modal-body">
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-sm-1">
-            <dl>
-                <dt><i class="fas fa-info-circle"></i> RM:</dt>
-                <dd class="text-md"><?php echo $id->id ?></dd>
-            </dl>
-        </div>
-        <div class="col-sm-3">
-            <dl>
-                <dt><i class="fas fa-calendar"></i> FECHA:</dt>
-                <dd class="text-md"><?php echo $id->date ?></dd>
-            </dl>
-        </div>
-        <div class="col-sm-3">
-            <dl>
-                <dt><i class="fas fa-user"></i> CLIENTE:</dt>
-                <dd class="text-md"><?php echo $id->clientname ?></dd>
-            </dl>
+            <b>RM:</b> <?php echo $id->id ?>
         </div>
         <div class="col-sm-2">
-            <dl>
-                <dt><i class="fas fa-box"></i> PRODUCTO:</dt>
-                <dd class="text-md"><?php echo $id->productname ?></dd>
-            </dl>
+            <b>FECHA:</b> <?php echo $id->date ?>
         </div>
-        <div class="col-sm-2">
-            <dl>
-                <dt><i class="fas fa-globe"></i> CIUDAD:</dt>
-                <dd class="text-md"><?php echo $id->city ?></dd>
-            </dl>
+        <div class="col-sm-3">
+            <b>CLIENTE:</b> <?php echo $id->clientname ?>
+        </div>
+        <div class="col-sm-3">
+            <b>PRODUCTO:</b> <?php echo $id->productname ?>
+        </div>
+        <div class="col-sm-3">
+            <b>CIUDAD:</b> <?php echo $id->city ?>
         </div>
 
     </div>

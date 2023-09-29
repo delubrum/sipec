@@ -50,6 +50,7 @@ class TransportController{
         }
       }
       $item->price = preg_replace('/[^0-9]+/', '', $_REQUEST['price']);
+      $item->kg = preg_replace('/[^0-9]+/', '', $_REQUEST['kg'])/100;
       $id = $this->model->save($table,$item);
       echo $id;
     } else {
@@ -71,9 +72,10 @@ class TransportController{
         $result[$i]['end'] = $r->end;
         $result[$i]['rm'] = $r->rm;
         $result[$i]['qty'] = $r->qty;
-        $result[$i]['kg'] = $r->kg;
+        $result[$i]['kg'] = number_format($r->kg,2);
         $result[$i]['invoice'] = $r->invoice;
         $result[$i]['price'] = number_format($r->price);
+        $result[$i]['notes'] = $r->notes;
         $i++;
       }
       echo json_encode($result);

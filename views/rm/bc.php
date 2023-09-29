@@ -8,44 +8,28 @@
     </button>
   </div>
   <div class="modal-body">
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-sm-1">
-            <dl>
-                <dt><i class="fas fa-info-circle"></i> LOTE:</dt>
-                <dd class="text-md"><?php echo $id->id ?></dd>
-            </dl>
+            <b>LOTE:</b> <?php echo $id->id ?>
         </div>
         <div class="col-sm-1">
-            <dl>
-                <dt><i class="fas fa-info-circle"></i> RM:</dt>
-                <dd class="text-md"><?php echo $id->rmId ?></dd>
-            </dl>
+            <b>RM:</b> <?php echo $id->rmId ?>
+        </div>
+        <div class="col-sm-3">
+            <b>CLIENTE:</b> <?php echo $id->clientname ?>
         </div>
         <div class="col-sm-2">
-            <dl>
-                <dt><i class="fas fa-user"></i> CLIENTE:</dt>
-                <dd class="text-md"><?php echo $id->clientname ?></dd>
-            </dl>
+           <b>PRODUCTO: </b> <?php echo $id->productname ?>
         </div>
-        <div class="col-sm-2">
-            <dl>
-                <dt><i class="fas fa-box"></i> PRODUCTO:</dt>
-                <dd class="text-md"><?php echo $id->productname ?></dd>
-            </dl>
+        <div class="col-sm-1">
+            <b>REACTOR:</b> <?php echo $id->reactor ?>
         </div>
-        <div class="col-sm-2">
-            <dl>
-                <dt><i class="fas fa-globe"></i> CANTIDAD:</dt>
-                <dd class="text-md"><?php echo $qty ?></dd>
-            </dl>
+        <div class="col-sm-4">
+            <b>PESO MP A RECUPERAR:</b> <?php echo $qty ?>
         </div>
+    </div>
 
-        <div class="col-sm-2">
-            <dl>
-                <dt><i class="fas fa-globe"></i> REACTOR:</dt>
-                <dd class="text-md"><?php echo $id->reactor ?></dd>
-            </dl>
-        </div>
+    <div class="row">
 
         <div class="col-sm-4">
             <div class="form-group">
