@@ -192,7 +192,7 @@
       <?php 
       $i=0;$kg=0;$kg_client=0;$tara=0;$tara_client=0;$net=0;$net_client=0;
       $filters = "and rmId = " . $_REQUEST['id'];
-      foreach($this->init->list('*','rm_items',$filters) as $r) {
+      foreach($this->model->list('*','rm_items',$filters) as $r) {
       ?>
       </tr>
         <td><?php echo "<b>" . ($i+1) . "</b>" ?></td>

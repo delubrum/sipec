@@ -151,27 +151,49 @@
             </div>
         </div>
 
-    </div>
 
+        <div class="col-sm-12">
+            <?php if ($status == 'Producción' || $status == 'Iniciado') { ?>
+                <button class='btn btn-primary add float-right' data-id='<?php echo $id->id ?>'><i class="fas fa-plus"></i> Adicionar</button>
+            <?php } ?>
+        </div>
+
+    <div class="col-sm-7">
     <div class="table-responsive p-0 mt-3" style="width:100%">
 			<table id="items" class="table-excel">
 					<thead>
 					<tr>
 							<th>Fecha</th>
-							<th>Tipo</th>
 							<th>Peso <br> Neto</th>
 							<th>Peso <br> Tambor</th>
 							<th>T°</th>
 							<th>Notas</th>
-							<th style='width:20px !important'>
-							<?php if ($status == 'Producción' || $status == 'Iniciado') { ?>
-							<button class='btn btn-primary add' data-id='<?php echo $id->id ?>'><i class="fas fa-plus"></i> Adicionar</button>
-							<?php } ?>
-							</th>
+                            <th>Usuario</th>
 					</tr>
 					</thead>
 			</table>    
     </div>
+    </div>
+
+    
+
+    <div class="col-sm-5">
+            <div class="table-responsive p-0 mt-3" style="width:100%">
+			<table id="itemsb" class="table-excel">
+					<thead>
+					<tr>
+							<th>Fecha</th>
+							<th>T°</th>
+							<th>Notas</th>
+                            <th>Usuario</th>
+					</tr>
+					</thead>
+			</table>    
+    </div>
+    </div>
+
+    </div>
+
 
   </div>
 
@@ -224,7 +246,6 @@ table = $('#items').DataTable({
     },
     'columns': [
         { data: 'date' },
-        { data: 'type' },
         { data: 'net' },
         { data: 'drum' },
         { data: 'temp' },
@@ -233,12 +254,55 @@ table = $('#items').DataTable({
     ],
 		"columnDefs": [
         { "width": "110px", "targets": 0 },
-        { "width": "60px", "targets": [1,2,3,4] },
-        { "width": "130px", "targets": 6 },
+        { "width": "60px", "targets": [1,2,3] },
+        { "width": "130px", "targets": 5 },
     ]
 });
 setTimeout( function () {
     table.draw();
+}, 200 );
+
+});
+
+$(document).ready(function() {
+tableb = $('#itemsb').DataTable({
+    'order': [[1, 'asc']],
+    'lengthChange' : false,
+    'paginate': false,
+    'scrollX' : true,
+    'autoWidth' : false,
+    'ordering': false,
+    'searching': false,
+    'info':     false,
+    language : {
+        'zeroRecords': 'Agrega un item'          
+    },
+    'ajax': {
+        'url':'?c=BC&a=ItemsBData&id=<?php echo $id->id ?>',
+        'dataSrc': function (json) {
+            // Check if the data array is not empty or null
+            if (json != '') {
+                return json;
+            } else {
+                // Hide the table if there is no data
+                return []; // Return an empty array to prevent rendering
+            }
+        },
+    },
+    'columns': [
+        { data: 'date' },
+        { data: 'temp' },
+        { data: 'notes' },
+		{ data: 'user' },
+    ],
+		"columnDefs": [
+        { "width": "110px", "targets": 0 },
+        { "width": "60px", "targets": [1,2] },
+        { "width": "130px", "targets": 3 },
+    ]
+});
+setTimeout( function () {
+    tableb.draw();
 }, 200 );
 
 });

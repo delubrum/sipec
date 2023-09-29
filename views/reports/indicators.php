@@ -35,7 +35,7 @@
 												<div class="input-group">
 														<select class="form-control select2" name="clientId" id="client" style="width: 100%;" required>
 																<option value=''></option>
-																<?php foreach ($this->init->list("*","users"," and type = 'Cliente' and status = 1") as $r) { ?>     
+																<?php foreach ($this->model->list("*","users"," and type = 'Cliente' and status = 1") as $r) { ?>     
 																		<option value='<?php echo $r->id?>'><?php echo $r->company?></option>
 																<?php } ?>
 														</select>

@@ -31,12 +31,12 @@
 						<form id="userPermissions_form">
 							<div class="row">
 								<div class="col-sm-12 permissions">
-								<?php foreach ($this->users->PermissionsTitleList() as $t) { ?>
+								<?php foreach ($this->model->list('DISTINCT(category)','permissions',' ORDER BY sort,category ASC') as $t) { ?>
 									<div class="mt-3">
 										<h5><?php echo $t->category ?></h5>
 										<hr>
 									</div>
-									<?php foreach ($this->users->PermissionsList($t->category) as $p) { ?>
+									<?php foreach ($this->model->list('*','permissions'," and category = '$t->category' ORDER BY sort,name ASC") as $p) { ?>
 									<label class="btn <?php echo (in_array($p->id, json_decode($id->permissions))) ? 'btn-primary' : 'btn-secondary'; ?> permission" data-id="<?php echo $p->id ?>" style="cursor:pointer">
 										<?php echo $p->name ?>										
 									</label>

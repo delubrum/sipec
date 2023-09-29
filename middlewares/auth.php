@@ -1,10 +1,7 @@
 <?php
-require_once 'models/login.php';
-require_once 'util.php';
+require_once 'models/model.php';
 
-$auth = new Login();
-$util = new Util();
-
+$model = new Model();
 // Get Current date, time
 $current_time = time();
 $current_date = date("Y-m-d H:i:s", $current_time);
@@ -22,8 +19,8 @@ else if (!empty($_COOKIE["user_login"]) && !empty($_COOKIE["random_password"]) &
   $isSelectorVerified = false;
   $isExpiryDateVerified = false;
   // Get token for username
-  $userToken = $auth->getTokenByEmail($_COOKIE["user_login"],0);
-
+  $cookie = $_COOKIE["user_login"];
+  $userToken = $model->get('*','tokenAuth'," and email = '$cookie' and is_expired = '0'");
   if(!empty($userToken)) {
     // Validate random password cookie with database
     if (password_verify($_COOKIE["random_password"], $userToken->password_hash)) {
@@ -41,7 +38,7 @@ else if (!empty($_COOKIE["user_login"]) && !empty($_COOKIE["random_password"]) &
     // Else, mark the token as expired and clear cookies
     if (!empty($userToken->id) && $isPasswordVerified && $isSelectorVerified && $isExpiryDateVerified) {
       $isLoggedIn = true;
-      $user = $auth->getUserByEmail($userToken->email);
+      $user = $model->get('id,password,lang','users'," and email = '$userToken->email' and status = '1'");
       session_start();
       $_SESSION["id-SIPEC"] = $user->id;
       session_write_close();
@@ -50,10 +47,12 @@ else if (!empty($_COOKIE["user_login"]) && !empty($_COOKIE["random_password"]) &
       $lang = json_decode($lang_json, true);
     } else {
       if(!empty($userToken->id)) {
-        $auth->markAsExpired($userToken->id);
+        $item = new stdClass();
+        $item->is_expired = 1;
+        $model->update('tokenAuth',$item,$userToken->id);
       }
       // clear cookies
-      $util->clearAuthCookie();
+      $model->clearAuthCookie();
     }
   }
 }

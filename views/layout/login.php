@@ -62,11 +62,11 @@
 $(document).on('submit','#login_form', function(e) {
     e.preventDefault();
     if (document.getElementById("login_form").checkValidity()) {
-        $.post( "?c=Login&a=Login", $( "#login_form" ).serialize()).done(function( data ) {
+        $.post( "?c=Home&a=Login", $( "#login_form" ).serialize()).done(function( data ) {
             if(data.trim() != 'ok') {
                 toastr.error(data.trim());
             } else {
-                window.location='?c=Init&a=Index'
+                window.location='?c=Home&a=Index'
             }
         });
     }

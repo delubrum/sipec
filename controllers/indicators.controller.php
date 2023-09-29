@@ -1,10 +1,10 @@
 <?php
-require_once 'models/init.php';
+require_once 'models/model.php';
 
 class IndicatorsController{
   private $model;
   public function __CONSTRUCT(){
-    $this->init = new Init();
+    $this->model = new Model();
   }
 
   public function Index(){
@@ -13,7 +13,7 @@ class IndicatorsController{
       require_once 'views/layout/header.php';
       require_once 'views/reports/indicators.php';
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -41,7 +41,7 @@ class IndicatorsController{
       }
       echo json_encode($result);
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   } 
 

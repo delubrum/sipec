@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, modelial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="icon" sizes="192x192" href="assets/img/logo.png">
     <title>SIPEC</title>
@@ -98,7 +98,7 @@
                 </li>
       
                 <li class="nav-item">
-                   <a href="?c=Login&a=Logout" class="dropdown-item float-right"><i class="fa fa-times"></i> Cerrar</a>
+                   <a href="?c=Home&a=Logout" class="dropdown-item float-right"><i class="fa fa-times"></i> Cerrar</a>
                 </li>
 
             </ul>
@@ -108,7 +108,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-light-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="?c=Init&a=Index" class="brand-link">
+            <a href="?c=Home&a=Index" class="brand-link">
                 <img src="assets/img/logo.png" style="width:37px; margin-left:0.7rem !important" class="brand-image">
                 <span class="brand-text font-weight-dark pl-2 h6">SIPEC</span>
             </a>
@@ -122,10 +122,9 @@
                     <?php 
                     $permissionsTitle = array();
                     foreach($permissions as $p) { 
-                        $filters = "and id = " . $p;
-                        $permissionsTitle[] = $this->init->get('*','permissions',$filters)->title;
+                        $permissionsTitle[] = $this->model->get('*','permissions', "and id = $p")->title;
                     };
-                    foreach($this->init->navTitleList() as $t) { 
+                    foreach($this->model->list('id, title, c, icon','permissions', " and type = 'menu' GROUP BY title ORDER BY sortm ASC") as $t) { 
                     if (in_array($t->title, $permissionsTitle)) {
                     ?>
                         <li class="nav-item has-treeview">
@@ -137,8 +136,7 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview" style="display: none;">
-                            
-                            <?php foreach($this->init->navSubtitleList($t->title) as $s) {
+                            <?php foreach($this->model->list('*','permissions'," and type = 'menu' AND title = '$t->title' ORDER BY sort ASC") as $s) {
                             if (in_array($s->id, $permissions)) { ?>
                                 <li class="nav-item">
                                     <a href="?c=<?php echo $s->c ?>&a=<?php echo $s->a ?>" <?php echo $s->attributes ?>
@@ -161,7 +159,7 @@
         <div class="content-wrapper" style="background-image: url('assets/img/plants.png');background-repeat: no-repeat;background-size:700px;">
 
         <script>
-            setInterval(function(){$.post('?c=Init&a=SessionRefresh');},600000); //refreshes the session every 10 minutes
+            setInterval(function(){$.post('?c=Home&a=SessionRefresh');},600000); //refreshes the session every 10 minutes
             $("#loading").show();
             document.addEventListener("DOMContentLoaded", function() {
                 $("#loading").hide();

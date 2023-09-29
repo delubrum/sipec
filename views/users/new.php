@@ -107,7 +107,7 @@
 
                     <div class="col-sm-12">
                         <div>
-                            <?php foreach ($this->init->list('*','products',' and status = 1') as $p) { ?>
+                            <?php foreach ($this->model->list('*','products',' and status = 1') as $p) { ?>
                             <label type="button" class="btn <?php echo (isset($id->products) and in_array($p->id,json_decode($id->products))) ? 'btn-info' : 'btn-secondary'; ?> products">
                                 <?php echo $p->name ?>
                                 <input type="hidden" name="products[]" value="<?php echo $p->id ?>" <?php echo (isset($id->products) and in_array($p->id,json_decode($id->products))) ? '' : 'disabled'; ?>>

@@ -1,10 +1,10 @@
 <?php
-require_once 'models/init.php';
+require_once 'models/model.php';
 
 class ProductsController{
   private $model;
   public function __CONSTRUCT(){
-    $this->init = new Init();
+    $this->model = new Model();
   }
 
   public function Index(){
@@ -13,7 +13,7 @@ class ProductsController{
       require_once 'views/layout/header.php';
       require_once 'views/products/index.php';
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -22,11 +22,11 @@ class ProductsController{
     if (in_array(4, $permissions)) {
       if (!empty($_REQUEST['id'])) {
         $filters = "and id = " . $_REQUEST['id'];
-        $id = $this->init->get('*','products', $filters);
+        $id = $this->model->get('*','products', $filters);
       }
       require_once 'views/products/new.php';
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -36,7 +36,7 @@ class ProductsController{
     if (in_array(4, $permissions)) {
       $result[] = array();
       $i=0;
-      foreach($this->init->list('*','products') as $r) {
+      foreach($this->model->list('*','products') as $r) {
         $result[$i]['name'] = $r->name;
         $result[$i]['status'] = ($r->status != 1) ? 'Inactivo' : 'Activo';
         $button = ($r->status != 1) ? "<a type='button' class='btn btn-dark text-white float-right status mx-1' data-id='$r->id' data-status='1'> <i class='fas fa-toggle-off'> </i> Activar</a>" : "<a type='button' class='btn btn-danger float-right status mx-1' data-id='$r->id' data-status='0'> <i class='fas fa-toggle-on'></i> Desactivar</a>";
@@ -47,7 +47,7 @@ class ProductsController{
       }
       echo json_encode($result);
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -56,9 +56,9 @@ class ProductsController{
     if (in_array(1, $permissions)) {
       $item = new stdClass();
       $item->status = $_REQUEST['status'];
-      $this->init->update('products',$item,$_REQUEST['id']);
+      $this->model->update('products',$item,$_REQUEST['id']);
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -74,8 +74,8 @@ class ProductsController{
       }
     }
     empty($_POST['id'])
-    ? $this->init->save($table,$item)
-    : $this->init->update($table,$item,$_POST['id']);
+    ? $this->model->save($table,$item)
+    : $this->model->update($table,$item,$_POST['id']);
   }
 
 }

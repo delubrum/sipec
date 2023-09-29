@@ -123,7 +123,7 @@
         </tr>
         <?php  
         $i=0;
-        foreach($this->init->list("a.*, b.username","bc_items a","and bcId = $id->id", "LEFT JOIN users b on a.userId = b.id") as $r) { ?>
+        foreach($this->model->list("a.*, b.username","bc_items a","and bcId = $id->id", "LEFT JOIN users b on a.userId = b.id") as $r) { ?>
         <tr>
             <td><?php echo $r->createdAt ?></td>
             <td><?php echo $r->type ?></td>

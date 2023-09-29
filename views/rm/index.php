@@ -52,8 +52,8 @@
 												<div class="input-group">
 														<select class="form-control select2" name="clientId" id="client" style="width: 100%;">
 																<option value=''></option>
-																<?php foreach ($this->init->list("*","users"," and type = 'Cliente' and status = 1") as $r) { ?>     
-																		<option value='<?php echo $r->id?>'><?php echo $r->company?></option>
+																<?php foreach ($this->model->list("*","users"," and type = 'Cliente' and status = 1") as $r) { ?>     
+																		<option <?php echo (!empty($_REQUEST['clientId']) and $r->id == $_REQUEST['clientId']) ? 'selected' : ''; ?> value='<?php echo $r->id?>'><?php echo $r->company?></option>
 																<?php } ?>
 														</select>
 												</div>
@@ -65,8 +65,8 @@
 													<div class="input-group">
 													<select class="form-control select2" name="productId" style="width: 100%;">
 																<option value=''></option>
-																<?php foreach ($this->init->list("*","products"," and status = 1") as $r) { ?>     
-																		<option value='<?php echo $r->id?>'><?php echo $r->name?></option>
+																<?php foreach ($this->model->list("*","products"," and status = 1") as $r) { ?>     
+																		<option <?php echo (!empty($_REQUEST['productId']) and $r->id == $_REQUEST['productId']) ? 'selected' : ''; ?> value='<?php echo $r->id?>'><?php echo $r->name?></option>
 																<?php } ?>
 														</select>
 													</div>
@@ -78,7 +78,6 @@
 													<div class="input-group">
 															<select class="form-control" name="status">
 															<option></option>
-															<option <?php echo (!empty($_REQUEST['status']) and 'Registrando' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Registrando">Registrando</option>
 															<option <?php echo (!empty($_REQUEST['status']) and 'Terminar R.M.' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Terminar R.M.">Terminar R.M.</option>
 															<option <?php echo (!empty($_REQUEST['status']) and 'Producción' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Producción">Producción</option>
 															<option <?php echo (!empty($_REQUEST['status']) and 'Iniciado' == $_REQUEST['status']) ? 'selected' : ''; ?> value="Iniciado">Iniciado</option>
@@ -136,8 +135,8 @@ $(document).on("click", ".new", function(e) {
 	$("#loading").show();
 	$.post( "?c=RM&a=New").done(function( data ) {
 		$("#loading").hide();
-		$('#xlModal').modal('toggle');
-		$('#xlModal .modal-content').html(data);
+		$('#lgModal').modal('toggle');
+		$('#lgModal .modal-content').html(data);
 	});
 });
 
@@ -172,8 +171,8 @@ list = $('#list').DataTable({
 		'scrollX' : true,
 		'autoWidth' : false,
 		'ajax': {
-			'url':'?c=RM&a=Data',
-			'dataSrc': function (json) {
+			url:"?c=RM&a=Data&filters=<?php echo $filters ?>",
+			dataSrc: function (json) {
 				// Check if the data array is not empty or null
 				if (json != '') {
 					return json;

@@ -1,10 +1,10 @@
 <?php
-require_once 'models/init.php';
+require_once 'models/model.php';
 
 class CertificateController{
   private $model;
   public function __CONSTRUCT(){
-    $this->init = new Init();
+    $this->model = new Model();
   }
 
   public function Month(){
@@ -13,7 +13,7 @@ class CertificateController{
       require_once 'views/layout/header.php';
       require_once 'views/certificates/month.php';
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -23,7 +23,7 @@ class CertificateController{
     if (in_array(5, $permissions)) {
       $result[] = array();
       $i=0;
-      foreach($this->init->list('MONTH(closedAt) as date','rm',"and clientId = $user->id and closedAt is not null GROUP BY MONTH(closedAt), YEAR(closedAt)",'') as $r) {
+      foreach($this->model->list('MONTH(closedAt) as date','rm',"and clientId = $user->id and closedAt is not null GROUP BY MONTH(closedAt), YEAR(closedAt)",'') as $r) {
         if ((date('n') != $r->date) or (date("Y-m-l") < date("Y-m-d"))) {
           $date = date('Y-m-d', mktime(0, 0, 0, $r->date, 1));
           $result[$i]['date'] = date('Y-M', mktime(0, 0, 0, $r->date, 1));
@@ -33,7 +33,7 @@ class CertificateController{
       }
       echo json_encode($result);
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -42,7 +42,7 @@ class CertificateController{
     if (in_array(5, $permissions)) {
       require_once 'views/reports/certificate.php';
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -52,7 +52,7 @@ class CertificateController{
       require_once 'views/layout/header.php';
       require_once 'views/certificates/pd.php';
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -62,7 +62,7 @@ class CertificateController{
     if (in_array(8, $permissions)) {
       $result[] = array();
       $i=0;
-      foreach($this->init->list('a.*,b.company as clientname, c.name as productname','rm a'," and clientId = $user->id and a.status = 'Cerrado'",'LEFT JOIN users b ON a.clientId = b.id LEFT JOIN products c ON a.productId = c.id') as $r) {
+      foreach($this->model->list('a.*,b.company as clientname, c.name as productname','rm a'," and clientId = $user->id and a.status = 'Cerrado'",'LEFT JOIN users b ON a.clientId = b.id LEFT JOIN products c ON a.productId = c.id') as $r) {
         $result[$i]['id'] = $r->id;
         $result[$i]['date'] = $r->date;
         $result[$i]['product'] = $r->productname;
@@ -72,7 +72,7 @@ class CertificateController{
       }
       echo json_encode($result);
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 

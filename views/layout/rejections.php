@@ -11,7 +11,7 @@
         <th>Cause</th>
         <th>User</th>
     </tr>
-    <?php foreach($this->init->RejectList($type,$id) as $reject) { ?>
+    <?php foreach($this->model->RejectList($type,$id) as $reject) { ?>
     <tr>
         <td style="width:20%"><?php echo $reject->createdAt ?></td>
         <td style="text-align:justify"><?php echo $reject->cause ?></td>

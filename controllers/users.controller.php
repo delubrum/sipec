@@ -1,12 +1,10 @@
 <?php
-require_once 'models/users.php';
-require_once 'models/init.php';
+require_once 'models/model.php';
 
 class UsersController{
   private $model;
   public function __CONSTRUCT(){
-    $this->users = new Users();
-    $this->init = new Init();
+    $this->model = new Model();
   }
 
   public function Index(){
@@ -15,7 +13,7 @@ class UsersController{
       require_once 'views/layout/header.php';
       require_once 'views/users/index.php';
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -25,7 +23,7 @@ class UsersController{
       $a = 'Edit';
       require_once 'views/users/new.php';
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -35,7 +33,7 @@ class UsersController{
     if (in_array(1, $permissions)) {
       $result[] = array();
       $i=0;
-      foreach($this->init->list('*','users') as $r) {
+      foreach($this->model->list('*','users') as $r) {
         $result[$i]['type'] = $r->type;
         $result[$i]['date'] = $r->createdAt;
         $result[$i]['name'] = $r->username;
@@ -51,7 +49,7 @@ class UsersController{
       }
       echo json_encode($result);
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -59,12 +57,12 @@ class UsersController{
     require_once "middlewares/check.php";
     if (in_array(1, $permissions) and isset($_REQUEST["id"])){
       $filters = "and id = " . $_REQUEST['id'];
-      $id = $this->init->get('*','users',$filters);
+      $id = $this->model->get('*','users',$filters);
       $a = 'Profile';
       require_once 'views/layout/header.php';
       require_once 'views/users/profile.php';
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -73,9 +71,9 @@ class UsersController{
     if (in_array(1, $permissions)) {
       $item = new stdClass();
       $item->status = $_REQUEST['status'];
-      $this->init->update('users',$item,$_REQUEST['id']);
+      $this->model->update('users',$item,$_REQUEST['id']);
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -99,15 +97,15 @@ class UsersController{
         $item->password = password_hash($item->password, PASSWORD_DEFAULT);
         if (!empty($_REQUEST['userId'])) {
           $item->id = $_REQUEST['userId'];
-          $this->init->update('users',$item,$_REQUEST['userId']);
+          $this->model->update('users',$item,$_REQUEST['userId']);
           echo $item->id;
         } else {
-          $id = $this->init->save('users',$item);
+          $id = $this->model->save('users',$item);
           echo $id;
         }
       }
     } else {
-      $this->init->redirect();
+      $this->model->redirect();
     }
   }
 
@@ -116,7 +114,7 @@ class UsersController{
     if (in_array(1, $permissions)) {
       $item = new stdClass();
       $item->permissions = $_REQUEST['permissions'];
-      $this->init->update('users',$item,$_REQUEST['userId']);
+      $this->model->update('users',$item,$_REQUEST['userId']);
     }
   }
 

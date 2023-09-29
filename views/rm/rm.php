@@ -46,7 +46,6 @@
         <div id="spreadsheet"></div>
     </center>
     
-    <?php if($status != 'Registrando') { ?>
     <div class="row mt-4">
         <div class="col-sm-2">
             <div class="form-group">
@@ -63,7 +62,7 @@
                 <div class="input-group">
                     <select class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="operatorId" required>
                         <option value=''></option>
-                        <?php foreach ($this->init->list("*","users"," and type = 'Operario' and status = 1") as $r) { ?>     
+                        <?php foreach ($this->model->list("*","users"," and type = 'Operario' and status = 1") as $r) { ?>     
                             <option value='<?php echo $r->id?>' <?php echo (isset($id->operatorId) and $id->operatorId == $r->id) ? 'selected' : '' ?>><?php echo $r->username?></option>
                         <?php } ?>
                     </select>
@@ -75,7 +74,12 @@
             <div class="form-group">
                 <label>* Reactor N°:</label>
                 <div class="input-group">
-                <input type="number" step="1" min="1" class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="reactor" value="<?php echo (isset($id)) ? $id->reactor : ''; ?>" required>
+                    <select class="form-control inputRM" data-id="<?php echo $id->id ?>" data-field="reactor">
+                        <option></option>
+                        <option <?php echo (isset($id) and $id->reactor == 1) ?'selected' : ''; ?>>1</option>
+                        <option <?php echo (isset($id) and $id->reactor == 2) ?'selected' : ''; ?>>2</option>
+                        <option <?php echo (isset($id) and $id->reactor == 3) ?'selected' : ''; ?>>3</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -131,7 +135,6 @@
 
     </div>
 
-    <?php } ?> 
 
   </div>
 
@@ -174,63 +177,43 @@ var SUMCOL = function(instance, columnId) {
     allowExport: false,
     parseFormulas: true,
     onafterchanges: save,
-    <?php if($status != 'Registrando') { ?>
-        allowInsertRow: false, // Allow ly inserting columns
-        allowDeleteRow: false, // Allow ly inserting columns
-        footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)','=SUMCOL(TABLE(), 2)','=SUMCOL(TABLE(), 3)','=SUMCOL(TABLE(), 4)','=SUMCOL(TABLE(), 5)']],
-    <?php } else { ?>
-        footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)']],
-    <?php } ?>
-
+    allowInsertRow: false, // Allow ly inserting columns
+    allowDeleteRow: false, // Allow ly inserting columns
+    footers: [['=SUMCOL(TABLE(), 0)','=SUMCOL(TABLE(), 1)','=SUMCOL(TABLE(), 2)','=SUMCOL(TABLE(), 3)','=SUMCOL(TABLE(), 4)','=SUMCOL(TABLE(), 5)']],
     columns: [
       { 
         title:'PESO BRUTO',
         type:'numeric',
         width:100,
-        <?php if($status != 'Registrando') { ?>
         readOnly: true,
-        <?php } ?> 
       },
       { 
         title:'PESO BRUTO \n CLIENTE',
         type:'numeric',
         width:100,
+        readOnly: true,
       },
       { 
-        title:'Taras',
+        title:'TARAS',
         type:'numeric',
         width:100,
-        <?php if($status == 'Registrando') { ?>
-        readOnly: true,
-        type:'hidden',
-        <?php } ?> 
       },
       { 
-        title:'Taras Cliente',
+        title:'TARAS CLIENTE',
         type:'numeric',
         width:100,
-        <?php if($status == 'Registrando') { ?>
-        readOnly: true,
-        type:'hidden',
-        <?php } ?> 
       },
       { 
-        title:'Neto',
+        title:'PESO NETO',
         width:100,
         type:'numeric',
         readOnly: true,
-        <?php if($status == 'Registrando') { ?>
-        type:'hidden',
-        <?php } ?> 
       },
       { 
-        title:'Neto cliente',
+        title:'PESO NETO \n CLIENTE',
         type:'numeric',
         width:100,
         readOnly: true,
-        <?php if($status == 'Registrando') { ?>
-        type:'hidden',
-        <?php } ?> 
       },
       {
         type: 'dropdown',
@@ -241,34 +224,24 @@ var SUMCOL = function(instance, columnId) {
           "Malo",
         ],
         validate: 'required',
-        <?php if($status != 'Registrando') { ?>
         readOnly: true,
-        <?php } ?> 
       },
       { 
         title:'DERRAMES \n VEHÍCULO',
         type: 'checkbox',
         width:100,
-        <?php if($status != 'Registrando') { ?>
         readOnly: true,
-        <?php } ?> 
       },
       { 
         title:'DERRAMES \n CANECA',
         type: 'checkbox',
         width:100,
-        <?php if($status != 'Registrando') { ?>
         readOnly: true,
-        <?php } ?> 
       },
       { 
         title:'DERRAMES \n PLANTA',
         type: 'checkbox',
         width:100,
-        <?php if($status == 'Registrando') { ?>
-        readOnly: true,
-        type:'hidden',
-        <?php } ?> 
       },
     ],
     updateTable:function(instance, cell, col, row, val, label, cellName) {
@@ -283,17 +256,11 @@ var SUMCOL = function(instance, columnId) {
         }
     },
     text:{
-        insertANewRowBefore:'Insertar fila antes',
-        insertANewRowAfter:'Insertar fila despues',
-        deleteSelectedRows:'Borrar filas',
         copy:'Copiar',
         paste:'Pegar',
         about: '',
-        areYouSureToDeleteTheSelectedRows:'Desea borrar las filas seleccionadas?',
     }
 });
-
-
 
 // Function to check for empty fields in JSON data
 function hasEmptyFields(data) {
@@ -318,48 +285,32 @@ function hasEmptyFields(data) {
   return checkObject(data);
 }
 
-<?php if($status != 'Registrando') { ?> 
-    $(document).on("change", ".inputRM", function(e) {
-        e.stopImmediatePropagation();
-        e.preventDefault();
-        id = $(this).data('id');
-        field = $(this).data('field');
-        value = $(this).val();
-        $("#loading").show();
-        $.post("?c=RM&a=Update",{id,field,value}).done(function(data){
-            $("#loading").hide();
-            paste = $('#paste').val();
-            total = SUMCOL(table, 4);
-            $('#total').html(total-paste)
-        });
+$(document).on("change", ".inputRM", function(e) {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    id = $(this).data('id');
+    field = $(this).data('field');
+    value = $(this).val();
+    $("#loading").show();
+    $.post("?c=RM&a=Update",{id,field,value}).done(function(data){
+        $("#loading").hide();
+        paste = $('#paste').val();
+        total = SUMCOL(table, 4);
+        $('#total').html(total-paste)
     });
-<?php } ?> 
+});
 
 $(document).on('submit', '#formRM', function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
-    if (hasEmptyFields(table.getColumnData(0))) {
-        toastr.error('Complete la columna Peso');
+    if (hasEmptyFields(table.getColumnData(2))) {
+        toastr.error('Complete la columna Tara');
         return
     };
-    if (hasEmptyFields(table.getColumnData(6))) {
-        toastr.error('Complete la columna Estado');
+    if (hasEmptyFields(table.getColumnData(3))) {
+        toastr.error('Complete la columna Tara Cliente');
         return
     };
-    if($("#status").val() != 'Registrando') {
-        if (hasEmptyFields(table.getColumnData(1))) {
-            toastr.error('Complete la columna Peso Cliente');
-            return
-        };
-        if (hasEmptyFields(table.getColumnData(2))) {
-            toastr.error('Complete la columna Tara');
-            return
-        };
-        if (hasEmptyFields(table.getColumnData(3))) {
-            toastr.error('Complete la columna Tara Cliente');
-            return
-        };
-    } 
     if (document.getElementById("formRM").checkValidity()) {
         $("#loading").show();
         $.post( "?c=RM&a=Update", $( "#formRM" ).serialize()).done(function(res) {

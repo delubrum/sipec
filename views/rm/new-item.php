@@ -93,6 +93,8 @@ $(document).on('submit', '#formItem', function(e) {
           $("#loading").hide();
           $("#xsModal").hide();
           table.ajax.reload( null, false );
+          tableb.ajax.reload( null, false );
+
         });
     }
 });
