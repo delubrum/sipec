@@ -10,6 +10,7 @@ class HomeController{
   public function Index(){
     require_once "middlewares/auth.php";
     if ($isLoggedIn) {
+      $_REQUEST['c'] = 'Home';
       require_once "middlewares/check.php";
       require_once 'views/layout/header.php';
       require_once 'views/layout/page.php';

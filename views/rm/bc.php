@@ -24,9 +24,26 @@
         <div class="col-sm-1">
             <b>REACTOR:</b> <?php echo $id->reactor ?>
         </div>
-        <div class="col-sm-4">
-            <b>PESO MP A RECUPERAR:</b> <?php echo $qty ?>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-4 text-center">
+            <b>PESO MP A RECUPERAR:</b> <h2 class="text-primary" id="torecover"><?php echo $qty ?></h2>
         </div>
+
+        <div class="col-sm-3 text-center">
+            <b>PESO MARTERIAL RECUPERADO:</b> <h2 class="text-primary" id="mp"><?php echo $recovered ?></h2>
+        </div>
+
+
+        <div class="col-sm-2 text-center">
+            <b>PROCENTAJE DE RECUPERACIÓN:</b> <span class="h2 text-primary" id="pr"><?php echo $pr ?> </span> <span class="h2 text-primary">%</span>
+        </div>
+
+        <div class="col-sm-3 text-center">
+        <b>CALCULO CERO:</b> <h2 class="text-danger" id="calc">0</h2>
+        </div>
+
     </div>
 
     <div class="row">
@@ -56,9 +73,18 @@
 
         <div class="col-sm-2">
             <div class="form-group">
+                <label>* Lodos del Proceso:</label>
+                <div class="input-group">
+                <input class="form-control inputBC" id="lp" data-id="<?php echo $id->id ?>" data-field="mud" value="<?php echo (isset($id)) ? $id->mud : ''; ?>" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-group">
                 <label>* Destilado Humedo:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="distilled" value="<?php echo (isset($id)) ? $id->distilled : ''; ?>" required>
+                <input class="form-control inputBC" id="dh" data-id="<?php echo $id->id ?>" data-field="distilled" value="<?php echo (isset($id)) ? $id->distilled : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -67,16 +93,7 @@
             <div class="form-group">
                 <label>* Perdida Evaporación:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="evaporation" value="<?php echo (isset($id)) ? $id->evaporation : ''; ?>" required>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-2">
-            <div class="form-group">
-                <label>* Lodos del Proceso:</label>
-                <div class="input-group">
-                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="mud" value="<?php echo (isset($id)) ? $id->mud : ''; ?>" required>
+                <input class="form-control inputBC" id="pe" data-id="<?php echo $id->id ?>" data-field="evaporation" value="<?php echo (isset($id)) ? $id->evaporation : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -143,37 +160,37 @@
         </div>
 
     <div class="col-sm-7">
-    <div class="table-responsive p-0 mt-3" style="width:100%">
-			<table id="items" class="table-excel">
-					<thead>
-					<tr>
-							<th>Fecha</th>
-							<th>Peso <br> Neto</th>
-							<th>Peso <br> Tambor</th>
-							<th>T°</th>
-							<th>Notas</th>
-                            <th>Usuario</th>
-					</tr>
-					</thead>
-			</table>    
-    </div>
+        <div class="table-responsive p-0 mt-3" style="width:100%">
+            <table id="items" class="table-excel">
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Peso <br> Neto</th>
+                    <th>Peso <br> Tambor</th>
+                    <th>T°</th>
+                    <th>Notas</th>
+                    <th>Usuario</th>
+                </tr>
+                </thead>
+            </table>    
+        </div>
     </div>
 
     
 
     <div class="col-sm-5">
-            <div class="table-responsive p-0 mt-3" style="width:100%">
+        <div class="table-responsive p-0 mt-3" style="width:100%">
 			<table id="itemsb" class="table-excel">
-					<thead>
-					<tr>
-							<th>Fecha</th>
-							<th>T°</th>
-							<th>Notas</th>
-                            <th>Usuario</th>
-					</tr>
-					</thead>
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>T°</th>
+                    <th>Notas</th>
+                    <th>Usuario</th>
+                </tr>
+                </thead>
 			</table>    
-    </div>
+        </div>
     </div>
 
     </div>
@@ -189,6 +206,27 @@
 
 
 <script>
+
+
+$(document).ready(function() {
+    torecover = Number($("#torecover").html());
+    mp = Number($("#mp").html());
+    lp = Number($("#lp").val());
+    dh = Number($("#dh").val());
+    pe = Number($("#pe").val());
+    calc = torecover-mp-lp-dh-pe;
+    $("#calc").html(calc);
+});
+
+$(document).on("change", "#lp,#dh,#pe", function(e) {
+    torecover = Number($("#torecover").html());
+    mp = Number($("#mp").html());
+    lp = Number($("#lp").val());
+    dh = Number($("#dh").val());
+    pe = Number($("#pe").val());
+    calc = torecover-mp-lp-dh-pe;
+    $("#calc").html(calc);
+});
 
 $(document).on("click", ".add", function(e) {
     e.stopImmediatePropagation();

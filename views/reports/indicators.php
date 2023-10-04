@@ -62,7 +62,7 @@
 											</div>
 									</div>
 								</div>
-								<button type="submit" class="btn btn-primary float-right"><i class="fas fa-search"></i> Search</button>
+								<button type="submit" class="btn btn-primary float-right"><i class="fas fa-search"></i> Buscar</button>
 							</form>
 						</div>
           </div>

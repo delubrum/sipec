@@ -94,7 +94,8 @@ $(document).on('submit', '#formItem', function(e) {
           $("#xsModal").hide();
           table.ajax.reload( null, false );
           tableb.ajax.reload( null, false );
-
+          $("#mp").html(res);
+          $("#pr").html((res/$("#torecover").html()*100).toFixed());
         });
     }
 });

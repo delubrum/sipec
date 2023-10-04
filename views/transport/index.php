@@ -66,19 +66,19 @@
 									<div class="col-sm-3">
 											<div class="form-group">
 													<label>From:</label>
-													<input type="date" class="form-control" name="from" value="<?php echo isset($_REQUEST['from']) ? $_REQUEST['from'] : "$mon" ?>" required>
+													<input type="date" onfocus='this.showPicker()' class="form-control" name="from" value="<?php echo isset($_REQUEST['from']) ? $_REQUEST['from'] : "$mon" ?>" required>
 											</div>
 									</div>
 
 									<div class="col-sm-3">
 											<div class="form-group">
 													<label>To:</label>
-													<input type="date" class="form-control" name="to" value="<?php echo isset($_REQUEST['to']) ? $_REQUEST['to'] : "$sun" ?>" required>
+													<input type="date" onfocus='this.showPicker()' class="form-control" name="to" value="<?php echo isset($_REQUEST['to']) ? $_REQUEST['to'] : "$sun" ?>" required>
 											</div>
 									</div>
 								</div>
 								<span class="h4">Total: $ <?php echo $total ?></span>
-								<button type="submit" class="btn btn-primary float-right"><i class="fas fa-search"></i> Search</button>
+								<button type="submit" class="btn btn-primary float-right"><i class="fas fa-search"></i> Buscar</button>
 							</form>
 						</div>
           </div>

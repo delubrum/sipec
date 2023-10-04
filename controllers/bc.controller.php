@@ -15,6 +15,8 @@ class BCController{
       $filters = "and rmId = " . $_REQUEST['id'];
       $net = $this->model->get('SUM(kg-tara) as total','rm_items',$filters)->total;
       $qty = $net - $id->paste;
+      $recovered =  $this->model->get('SUM(net) as total','bc_items'," and type = 'Ingreso' and bcid = $id->id")->total;
+      $pr = number_format($recovered/$qty*100);
       $status = $_REQUEST['status'];
       require_once 'views/rm/bc.php';
     } else {
@@ -51,7 +53,10 @@ class BCController{
         $this->model->update('rm',$rm,$rmId);
       }
       $id = $this->model->save('bc_items',$item);
-      echo $id;
+
+
+      echo $this->model->get('SUM(net) as total','bc_items'," and type = 'Ingreso' and bcid = $bcId")->total;
+
     } else {
       $this->model->redirect();
     }

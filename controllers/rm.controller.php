@@ -151,13 +151,21 @@ class RMController{
         $item->invoiceAt = date("Y-m-d H:i:s");
         $this->model->update('rm',$item,$_REQUEST['id']);
       }
-      if (isset($_REQUEST['field'])) {
-        $item->{$_REQUEST['field']} = $_REQUEST['value'];
-        $filters = "and rmId = " . $_REQUEST['id'];
-        $this->model->update('rm',$item,$_REQUEST['id']);
-      }
       if (isset($_REQUEST['status']) and $_REQUEST['status'] == 'Terminar R.M.') {
+        $arr = $_POST['data'];
+        $data = array();
+        parse_str($arr, $data);
+
         $item->rmAt = date("Y-m-d H:i:s");
+        $item->datetime = $data['datetime'];
+        $item->operatorId = $data['operatorId'];
+        $item->reactor = $data['reactor'];
+        $item->paste = $data['paste'];
+        $item->rmAt = $data['toreturn'];
+        $item->rmAt = $data['surplus'];
+        $item->rmAt =$data['notes'];
+        $item->data = json_encode($_REQUEST['table'],true);
+
         $itemb = new stdClass();
         $itemb->rmId = $_REQUEST['id'];
         $items = new stdClass();

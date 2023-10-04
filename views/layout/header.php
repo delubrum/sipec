@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, modelial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="icon" sizes="192x192" href="assets/img/logo.png">
     <title>SIPEC</title>
@@ -159,9 +159,15 @@
         <div class="content-wrapper" style="background-image: url('assets/img/plants.png');background-repeat: no-repeat;background-size:700px;">
 
         <script>
-            setInterval(function(){$.post('?c=Home&a=SessionRefresh');},600000); //refreshes the session every 10 minutes
+            setInterval(function(){$.post('?c=Home&a=SessionRefresh');},600000);
+
             $("#loading").show();
+
             document.addEventListener("DOMContentLoaded", function() {
                 $("#loading").hide();
+            });
+
+            window.addEventListener('beforeunload', function () {
+                $("#loading").show();
             });
         </script>

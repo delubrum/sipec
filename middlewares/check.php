@@ -3,7 +3,7 @@ if(!isset($_SESSION)) {
     session_start(); 
 }
 if (empty($_SESSION["id-SIPEC"])) {
-    header('Location: ?c=Login&a=Index');
+    header('Location: ?c=Home&a=Index');
 }
 else {
 $filter = "and id = " . $_SESSION["id-SIPEC"];
