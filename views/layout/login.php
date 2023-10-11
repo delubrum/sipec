@@ -66,7 +66,7 @@ $(document).on('submit','#login_form', function(e) {
             if(data.trim() != 'ok') {
                 toastr.error(data.trim());
             } else {
-                window.location='?c=Home&a=Index'
+                window.location='?c=Home&a=Index';
             }
         });
     }

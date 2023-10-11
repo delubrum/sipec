@@ -13,8 +13,9 @@ header("Feature-Policy: geolocation 'self';");
 // header("Expect-CT: max-age=86400, enforce, report-uri=\"https://example.com/ct-report\"");
 header("Permissions-Policy: autoplay=(self), camera=(), microphone=()");
 
-
+require 'vendor/autoload.php';
 require_once 'models/database.php';
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable('./'); $dotenv->load();
 
 $controller = 'home';
 

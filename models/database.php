@@ -1,9 +1,6 @@
 <?php
-require 'vendor/autoload.php';
-
 class Database {
     public static function Conectar() {
-        $dotenv = Dotenv\Dotenv::createUnsafeImmutable('/var/www/html/sipec/'); $dotenv->load();
         $dbUser = getenv('DB_USER');
         $dbPass = getenv('DB_PASS');
         // $timezone = "America/Bogota";
