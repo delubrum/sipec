@@ -27,28 +27,23 @@
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-4 text-center">
+        <div class="col-sm-2 offset-2 text-center">
             <b>PESO MP A RECUPERAR:</b> <h2 class="text-primary" id="torecover"><?php echo $qty ?></h2>
         </div>
 
-        <div class="col-sm-3 text-center">
+        <div class="col-sm-4 text-center">
             <b>PESO MARTERIAL RECUPERADO:</b> <h2 class="text-primary" id="mp"><?php echo $recovered ?></h2>
         </div>
 
 
         <div class="col-sm-2 text-center">
-            <b>PROCENTAJE DE RECUPERACIÓN:</b> <span class="h2 text-primary" id="pr"><?php echo $pr ?> </span> <span class="h2 text-primary">%</span>
+            <b>% RECUPERACIÓN:</b> <br><span class="h2 text-primary" id="pr"><?php echo $pr ?> </span> <span class="h2 text-primary">%</span>
         </div>
-
-        <div class="col-sm-3 text-center">
-        <b>CALCULO CERO:</b> <h2 class="text-danger" id="calc">0</h2>
-        </div>
-
     </div>
 
     <div class="row">
 
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <div class="form-group">
                 <label>* Tipo:</label>
                 <div class="input-group">
@@ -62,7 +57,9 @@
             </div>
         </div>
 
-        <div class="col-sm-2">
+
+
+        <div class="col-sm-4">
             <div class="form-group">
                 <label>* Lodos de Destilación:</label>
                 <div class="input-group">
@@ -75,7 +72,7 @@
             <div class="form-group">
                 <label>* Lodos del Proceso:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" id="lp" data-id="<?php echo $id->id ?>" data-field="mud" value="<?php echo (isset($id)) ? $id->mud : ''; ?>" required>
+                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="mud" value="<?php echo (isset($id)) ? $id->mud : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -84,7 +81,7 @@
             <div class="form-group">
                 <label>* Destilado Humedo:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" id="dh" data-id="<?php echo $id->id ?>" data-field="distilled" value="<?php echo (isset($id)) ? $id->distilled : ''; ?>" required>
+                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="distilled" value="<?php echo (isset($id)) ? $id->distilled : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -93,7 +90,7 @@
             <div class="form-group">
                 <label>* Perdida Evaporación:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" id="pe" data-id="<?php echo $id->id ?>" data-field="evaporation" value="<?php echo (isset($id)) ? $id->evaporation : ''; ?>" required>
+                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="evaporation" value="<?php echo (isset($id)) ? $id->evaporation : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -102,7 +99,7 @@
             <div class="form-group">
                 <label>* Agua Inicial:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="water_0" value="<?php echo (isset($id)) ? $id->water_0 : ''; ?>" required>
+                <input class="form-control inputBC" id="water0" data-id="<?php echo $id->id ?>" data-field="water_0" value="<?php echo (isset($id)) ? $id->water_0 : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -111,7 +108,7 @@
             <div class="form-group">
                 <label>* Agua Final:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="water_1" value="<?php echo (isset($id)) ? $id->water_1 : ''; ?>" required>
+                <input class="form-control inputBC" id="water1" data-id="<?php echo $id->id ?>" data-field="water_1" value="<?php echo (isset($id)) ? $id->water_1 : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -120,7 +117,7 @@
             <div class="form-group">
                 <label>* Gas Inicial:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="gas_0" value="<?php echo (isset($id)) ? $id->gas_0 : ''; ?>" required>
+                <input class="form-control inputBC" id="gas0" data-id="<?php echo $id->id ?>" data-field="gas_0" value="<?php echo (isset($id)) ? $id->gas_0 : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -129,7 +126,7 @@
             <div class="form-group">
                 <label>* Gas Final:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="gas_1" value="<?php echo (isset($id)) ? $id->gas_1 : ''; ?>" required>
+                <input class="form-control inputBC" id="gas1" data-id="<?php echo $id->id ?>" data-field="gas_1" value="<?php echo (isset($id)) ? $id->gas_1 : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -138,7 +135,7 @@
             <div class="form-group">
                 <label>* Energía Inicial:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="energy_0" value="<?php echo (isset($id)) ? $id->energy_0 : ''; ?>" required>
+                <input class="form-control inputBC" id="energy0" data-id="<?php echo $id->id ?>" data-field="energy_0" value="<?php echo (isset($id)) ? $id->energy_0 : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -147,7 +144,7 @@
             <div class="form-group">
                 <label>* Energía Final:</label>
                 <div class="input-group">
-                <input class="form-control inputBC" data-id="<?php echo $id->id ?>" data-field="energy_1" value="<?php echo (isset($id)) ? $id->energy_1 : ''; ?>" required>
+                <input class="form-control inputBC" id="energy1" data-id="<?php echo $id->id ?>" data-field="energy_1" value="<?php echo (isset($id)) ? $id->energy_1 : ''; ?>" required>
                 </div>
             </div>
         </div>
@@ -164,6 +161,7 @@
             <table id="items" class="table-excel">
                 <thead>
                 <tr>
+                    <th>Nro</th>
                     <th>Fecha</th>
                     <th>Peso <br> Neto</th>
                     <th>Peso <br> Tambor</th>
@@ -207,27 +205,6 @@
 
 <script>
 
-
-$(document).ready(function() {
-    torecover = Number($("#torecover").html());
-    mp = Number($("#mp").html());
-    lp = Number($("#lp").val());
-    dh = Number($("#dh").val());
-    pe = Number($("#pe").val());
-    calc = torecover-mp-lp-dh-pe;
-    $("#calc").html(calc);
-});
-
-$(document).on("change", "#lp,#dh,#pe", function(e) {
-    torecover = Number($("#torecover").html());
-    mp = Number($("#mp").html());
-    lp = Number($("#lp").val());
-    dh = Number($("#dh").val());
-    pe = Number($("#pe").val());
-    calc = torecover-mp-lp-dh-pe;
-    $("#calc").html(calc);
-});
-
 $(document).on("click", ".add", function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
@@ -267,17 +244,18 @@ table = $('#items').DataTable({
         },
     },
     'columns': [
-        { data: 'date' },
-        { data: 'net' },
-        { data: 'drum' },
-        { data: 'temp' },
-        { data: 'notes' },
+      { data: 'index' },
+      { data: 'date' },
+      { data: 'net' },
+      { data: 'drum' },
+      { data: 'temp' },
+      { data: 'notes' },
 		{ data: 'user' },
     ],
 		"columnDefs": [
-        { "width": "110px", "targets": 0 },
-        { "width": "60px", "targets": [1,2,3] },
-        { "width": "130px", "targets": 5 },
+        { "width": "110px", "targets": 1 },
+        { "width": "60px", "targets": [2,3,4] },
+        { "width": "130px", "targets": 6 },
     ]
 });
 setTimeout( function () {
@@ -344,6 +322,24 @@ $(document).on("change", ".inputBC", function(e) {
 $(document).on('submit', '#formBC', function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
+    gas0 = $("#gas0").val();
+    gas1 = $("#gas1").val();
+    water0 = $("#water0").val();
+    water1 = $("#water1").val();
+    energy0 = $("#energy0").val();
+    energy1 = $("#energy1").val();
+    if (water1 <= water0) {
+      toastr.error('Agua Final menor que Agua Inicial');
+      return;
+    }
+    if (gas1 <= gas0) {
+      toastr.error('Gas Final menor que Gas Inicial');
+      return;
+    }
+    if (energy1 <= energy0) {
+      toastr.error('Energía Final menor que Energía Inicial');
+      return;
+    }
     if (document.getElementById("formBC").checkValidity()) {
         $("#loading").show();
         $.post( "?c=BC&a=Update", $( "#formBC" ).serialize()).done(function(res) {

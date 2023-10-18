@@ -70,7 +70,7 @@ class RMController{
         }
         $button = ($r->status != 'Cerrado') ? "<button type='button' data-id='$r->id' data-status='$r->status' class='btn btn-primary mb-1 action'> <i class='fas fa-pen'></i> Editar</button><br>" : "";
         $rm = ($r->status != 'Terminar R.M.' and $r->status != 'Registrando') ? "<a href='?c=RM&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-primary mb-1'><i class='fas fa-file'></i> Recibo de Material</a><br>" : "";
-        $bc = ($r->status == 'Facturación' || $r->status == 'Cerrado') ? "<a href='?c=BC&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-primary mb-1'><i class='fas fa-file'></i> Bitácora</a><br>" : "";
+        $bc = ($r->status == 'Facturación' || $r->status == 'Cerrado' || $r->status == 'Análisis') ? "<a href='?c=BC&a=Detail&id=$r->id' type='button' target='_blank' class='btn btn-primary mb-1'><i class='fas fa-file'></i> Bitácora</a><br>" : "";
         $pd = ($r->status == 'Facturación' || $r->status == 'Cerrado') ? "<a href='?c=RM&a=PD&id=$r->id' type='button' target='_blank' class='btn btn-primary'><i class='fas fa-file'></i> Paquete Despacho</a><br>" : "";
 
         $result[$i]['action'] = "$button $rm $bc $pd";
@@ -161,9 +161,9 @@ class RMController{
         $item->operatorId = $data['operatorId'];
         $item->reactor = $data['reactor'];
         $item->paste = $data['paste'];
-        $item->rmAt = $data['toreturn'];
-        $item->rmAt = $data['surplus'];
-        $item->rmAt =$data['notes'];
+        $item->toreturn = $data['toreturn'];
+        $item->surplus = $data['surplus'];
+        $item->notes =$data['notes'];
         $item->data = json_encode($_REQUEST['table'],true);
 
         $itemb = new stdClass();

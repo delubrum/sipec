@@ -70,6 +70,7 @@ class BCController{
       $i=0;
       $filters = "and bcId = " . $_REQUEST['id'] . " and a.type='Ingreso'";
       foreach($this->model->list('a.*,b.username','bc_items a',$filters,'LEFT JOIN users b on a.userId = b.id') as $r) {
+        $result[$i]['index'] = ($i!=0) ? $i : '';
         $result[$i]['date'] = $r->createdAt;
         $result[$i]['net'] = $r->net;
         $result[$i]['drum'] = $r->drum;
@@ -114,7 +115,7 @@ class BCController{
       } else {
         $itemb = new stdClass();
         $itemb->bcAt = date("Y-m-d H:i:s");
-        $itemb->status = 'Facturación';
+        $itemb->status = 'Análisis';
         $bcId = $_REQUEST['id'];
         $rmId = $this->model->get("*","bc"," and id = $bcId")->rmId;
         $this->model->update('rm',$itemb,$rmId);

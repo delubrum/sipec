@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12">
-                <h2 class="m-0 text-dark">Mensual</h2>
+                <h2 class="m-0 text-dark">Recuperación Mensual</h2>
             </div>
         </div>
     </div>

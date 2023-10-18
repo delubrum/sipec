@@ -67,13 +67,13 @@ class TransportController{
       $filters = $_REQUEST['filters'];
       foreach($this->model->list('*','transport',$filters) as $r) {
         $result[$i]['date'] = $r->createdAt;
+        $result[$i]['type'] = $r->type;
+        $result[$i]['code'] = $r->code;
         $result[$i]['user'] = $r->user;
         $result[$i]['start'] = $r->start;
         $result[$i]['end'] = $r->end;
-        $result[$i]['rm'] = $r->rm;
         $result[$i]['qty'] = $r->qty;
         $result[$i]['kg'] = number_format($r->kg,2);
-        $result[$i]['invoice'] = $r->invoice;
         $result[$i]['price'] = number_format($r->price);
         $result[$i]['notes'] = $r->notes;
         $i++;

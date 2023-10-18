@@ -98,23 +98,23 @@
       </tr>
       <tr>
         <td>Peso material recuperado</td>
-        <td><?php echo "%" ?></td>
+        <td><?php echo $id->mpClient ?></td>
       </tr>
       <tr>
         <td>Lodos del proceso</td>
-        <td><?php echo $id->mud ?></td>
+        <td><?php echo $id->mudpClient ?></td>
       </tr>
       <tr>
         <td>Destilado húmedo</td>
-        <td><?php echo $id->distilled ?></td>
+        <td><?php echo $id->distilledClient ?></td>
       </tr>
       <tr>
         <td>Perdida por evaporación</td>
-        <td><?php echo $id->evaporation ?></td>
+        <td><?php echo $id->evaporationClient ?></td>
       </tr>
       <tr>
         <td>Porcentaje de Recuperación</td>
-        <td><?php echo "%" ?></td>
+        <td><?php echo number_format($id->mpClient/($net - $id->paste)*100) ?></td>
       </tr>
     </table>
 
@@ -126,9 +126,9 @@
         
       </tr>
       <tr>
-        <td><?php echo $id->mud_dist ?></td>
-        <td><?php echo $id->mud_dist ?></td>
-        <td><?php echo $id->mud_dist ?></td>
+        <td><?php echo number_format($id->mudpClient/($net - $id->paste)*100) ?></td>
+        <td><?php echo number_format($id->distilledClient/($net - $id->paste)*100) ?></td>
+        <td><?php echo number_format($id->evaporationClient/($net - $id->paste)*100) ?></td>
       </tr>
     </table>
     </center>
@@ -146,27 +146,27 @@
       <tr>
         <td>Apariencia</td>
         <td>Liquido Transparente</td>
-        <td>Liquido Transparente</td>
+        <td><?php echo $id->apariencia ?></td>
       </tr>
       <tr>
         <td>Olor</td>
         <td>Característico</td>
-        <td>Característico</td>
+        <td><?php echo $id->olor ?></td>
       </tr>
       <tr>
         <td>Densidad (g/ml)</td>
         <td>0.800 - 0.900</td>
-        <td><?php echo "densidad" ?></td>
+        <td><?php echo $id->densidad ?></td>
       </tr>
       <tr>
         <td>% Humedad</td>
         <td>4.90 - 9.50</td>
-        <td><?php echo "humedadP" ?></td>
+        <td><?php echo $id->humedad ?></td>
       </tr>
       <tr>
         <td>% PH</td>
         <td>5</td>
-        <td>5</td>
+        <td><?php echo $id->ph ?></td>
       </tr>
     </table>
     <p>
@@ -230,7 +230,7 @@
       </tr>
       </tr>
         <th>Plásticos</th>
-        <td>0</td>
+        <td><?php echo $this->model->get('count(id) as total','bc_items',"and bcId = $id->bcId")->total-1?></td>
         <td>0</td>
         <td>0</td>
         <td>0</td>           
@@ -238,7 +238,7 @@
       </tr>
         <th>Metalicos</th>
         <td>0</td>
-        <td>0</td>
+        <td><?php echo $this->model->get('count(id) as total','rm_items',"and rmId = $id->id")->total?></td>
         <td>0</td>
         <td>0</td>           
       </tr>

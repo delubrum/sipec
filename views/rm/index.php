@@ -143,13 +143,18 @@ $(document).on("click", ".new", function(e) {
 $(document).on("click", ".action", function() {
 	id = $(this).data('id');
 	status = $(this).data('status');
-	if (status == 'Producción' || status == 'Iniciado') {
-		url = "?c=BC&a=BC";
-	} else if (status == 'Facturación') {
-		url = "?c=BC&a=IV";
-	} else {
+  if (status == 'Terminar R.M.') {
 		url = "?c=RM&a=RM";
 	}
+	if (status == 'Producción' || status == 'Iniciado') {
+		url = "?c=BC&a=BC";
+	} 
+  if (status == 'Análisis') {
+		url = "?c=IP&a=IP";
+	}
+  if (status == 'Facturación') {
+		url = "?c=BC&a=IV";
+	} 
 	$("#loading").show();
 	$.post(url , {id, status}).done(function(data){
 		$("#loading").hide();

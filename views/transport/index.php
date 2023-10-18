@@ -88,13 +88,13 @@
 						<thead>
 							<tr>
 								<th>Fecha</th>
+                <th>Typo</th>
+                <th>Código</th>
 								<th>Responsable</th>
 								<th>Punto de Origen</th>
 								<th>Punto de Destino</th>
-								<th>RM</th>
 								<th>Cantidad de Tambores</th>
 								<th>Kg</th>
-								<th>Factura</th>
 								<th>Valor</th>
 								<th>Notas</th>
 							</tr>
@@ -140,13 +140,13 @@ list = $('#list').DataTable({
 		},
 		'columns': [
 			{ data: 'date' },
+      { data: 'type' },
+      { data: 'code' },
 			{ data: 'user' },
 			{ data: 'start' },
 			{ data: 'end' },
-			{ data: 'rm' },
 			{ data: 'qty' },
 			{ data: 'kg' },
-			{ data: 'invoice' },
 			{ data: 'price' },
 			{ data: 'notes' },
 		],

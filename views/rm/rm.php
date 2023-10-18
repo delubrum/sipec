@@ -82,7 +82,7 @@
             <div class="form-group">
                 <label>* Devolver:</label>
                 <div class="input-group">
-                <input type="number" step="1" min="1" class="form-control" name="toreturn" required>
+                <input type="number" step="1" min="0" class="form-control" name="toreturn" required>
                 </div>
             </div>
         </div>
@@ -91,7 +91,7 @@
             <div class="form-group">
                 <label>* Excedente:</label>
                 <div class="input-group">
-                <input type="number" step="1" min="1" class="form-control" name="surplus" required>
+                <input type="number" step="1" min="0" class="form-control" name="surplus" required>
                 </div>
             </div>
         </div>

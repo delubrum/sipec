@@ -111,28 +111,55 @@
         </div>
     </div>
 
-    <table class="tabla" style="width:100%">
-        <tr>
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <table class="tabla" style="width:100%">
+          <tr>              
+            <th>Nro</th>
             <th>Fecha</th>
-            <th>Tipo</th>
             <th>Peso <br> Neto</th>
             <th>Peso <br> Tambor</th>
             <th>T°</th>
             <th>Notas</th>
             <th>Usuario</th>
-        </tr>
-        <?php  
-        $i=0;
-        foreach($this->model->list("a.*, b.username","bc_items a","and bcId = $id->id", "LEFT JOIN users b on a.userId = b.id") as $r) { ?>
-        <tr>
-            <td><?php echo $r->createdAt ?></td>
-            <td><?php echo $r->type ?></td>
-            <td><?php echo $r->net ?></td>
-            <td><?php echo $r->drum ?></td>
-            <td><?php echo $r->temp ?></td>
-            <td><?php echo $r->notes ?></td>
-            <td><?php echo $r->username ?></td>
-        </tr>
-        <?php $i++; } ?>
-        </tr>
-    </table>    
+          </tr>
+          <?php  
+          $i=0;
+          foreach($this->model->list("a.*, b.username","bc_items a","and bcId = $id->id and a.type='Ingreso'", "LEFT JOIN users b on a.userId = b.id") as $r) { ?>
+          <tr>
+              <td><?php echo ($i !=0) ? $i : ''; ?></td>
+              <td><?php echo $r->createdAt ?></td>
+              <td><?php echo $r->net ?></td>
+              <td><?php echo $r->drum ?></td>
+              <td><?php echo $r->temp ?></td>
+              <td><?php echo $r->notes ?></td>
+              <td><?php echo $r->username ?></td>
+          </tr>
+          <?php $i++; } ?>
+          </tr>
+        </table>
+      </div>
+      <div class="col-sm-6">
+        <table class="tabla" style="width:100%">
+          <tr>
+              <th>Fecha</th>
+              <th>T°</th>
+              <th>Notas</th>
+              <th>Usuario</th>
+          </tr>
+          <?php  
+          $i=0;
+          foreach($this->model->list("a.*, b.username","bc_items a","and bcId = $id->id and a.type='Caldera'", "LEFT JOIN users b on a.userId = b.id") as $r) { ?>
+          <tr>
+              <td><?php echo $r->createdAt ?></td>
+              <td><?php echo $r->temp ?></td>
+              <td><?php echo $r->notes ?></td>
+              <td><?php echo $r->username ?></td>
+          </tr>
+          <?php $i++; } ?>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    

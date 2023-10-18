@@ -15,6 +15,28 @@
 
             <div class="col-sm-4">
                 <div class="form-group">
+                    <label>* Tipo:</label>
+                    <div class="input-group">
+                        <select class="form-control" name="type" required>
+                          </option value=""></option>
+                          </option value="RM"></option>
+                          </option value="Fectura"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label>* Código:</label>
+                    <div class="input-group">
+                        <input class="form-control" name="code" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
                     <label>* Responsable:</label>
                     <div class="input-group">
                         <input class="form-control" name="user" required>
@@ -42,15 +64,6 @@
 
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label>* RM:</label>
-                    <div class="input-group">
-                        <input type="number" step="1" min="1" class="form-control" name="rm" required>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4">
-                <div class="form-group">
                     <label>* Cantidad de Tambores:</label>
                     <div class="input-group">
                         <input type="number" step="1" min="1" class="form-control" name="qty" required>
@@ -63,15 +76,6 @@
                     <label>* Kg:</label>
                     <div class="input-group">
                         <input data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '', 'placeholder': '0'" class="form-control" name="kg" required>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label>* Factura:</label>
-                    <div class="input-group">
-                        <input class="form-control" name="invoice" required>
                     </div>
                 </div>
             </div>
